@@ -1,0 +1,15 @@
+# Gradle build output
+/build
+/.gradle
+checksums.lock
+
+# IDE 설정
+*.iml
+.idea/
+*.log
+src/main/resources/*.yml
+src/test/resources/*.yml
+
+# Docker 빌드 제외
+docker-compose.override.yml
+*.tar
