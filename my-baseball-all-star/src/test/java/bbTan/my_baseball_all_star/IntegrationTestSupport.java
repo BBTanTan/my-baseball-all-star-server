@@ -7,6 +7,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Sql(scripts = {"/schema-test.sql"})
+@Sql(scripts = {"/schema-test.sql", "/data-test.sql"})
 public abstract class IntegrationTestSupport {
 }
