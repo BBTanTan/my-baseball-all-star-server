@@ -21,10 +21,11 @@ CREATE TABLE player
 -- player_choice_count (선택 수 관리)
 CREATE TABLE player_choice_count
 (
-    player_id BIGINT PRIMARY KEY,
-    count     BIGINT      NOT NULL DEFAULT 0,
-    version   BIGINT      NOT NULL DEFAULT 0,
-    FOREIGN KEY (player_id) REFERENCES player (id) ON DELETE CASCADE
+    id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+    player_id BIGINT UNIQUE,
+    count     BIGINT NOT NULL DEFAULT 0,
+    version   BIGINT NOT NULL,
+    CONSTRAINT fk_player FOREIGN KEY (player_id) REFERENCES player (id) ON DELETE CASCADE
 );
 
 -- team (게임에 참여한 팀 정보)
