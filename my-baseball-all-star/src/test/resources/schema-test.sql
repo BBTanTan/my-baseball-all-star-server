@@ -42,9 +42,9 @@ CREATE TABLE play_result
 (
     id                 BIGINT AUTO_INCREMENT PRIMARY KEY,
     team_id            BIGINT       NOT NULL,
-    opposing_team_name VARCHAR(255) NOT NULL,
-    own_team_score     INTEGER      NOT NULL,
-    opposing_team      INTEGER      NOT NULL,
+    away_team_name  VARCHAR(255) NOT NULL,
+    home_team_score INTEGER      NOT NULL,
+    away_team_score INTEGER      NOT NULL,
     created_at         TIMESTAMP(6),
     FOREIGN KEY (team_id) REFERENCES team (id) ON DELETE CASCADE
 );
@@ -55,7 +55,7 @@ CREATE TABLE play_share
     id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     team_id        BIGINT       NOT NULL,
     url            VARCHAR(512) NOT NULL,
-    owner_password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     FOREIGN KEY (team_id) REFERENCES team (id) ON DELETE CASCADE
 );
 
