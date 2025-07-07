@@ -36,8 +36,6 @@ public class Player {
 
     private Double score;
 
-    private Long choiceCount;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -49,13 +47,12 @@ public class Player {
         Player player = (Player) o;
         return Objects.equals(id, player.id) && Objects.equals(name, player.name) && club == player.club
                 && position == player.position && Objects.equals(dateOfBirth, player.dateOfBirth)
-                && Objects.equals(score, player.score) && Objects.equals(choiceCount,
-                player.choiceCount);
+                && Objects.equals(score, player.score);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, club, position, dateOfBirth, score, choiceCount);
+        return Objects.hash(id, name, club, position, dateOfBirth, score);
     }
 
     @Override
@@ -67,7 +64,6 @@ public class Player {
                 ", position=" + position +
                 ", dateOfBirth=" + dateOfBirth +
                 ", score=" + score +
-                ", choiceCount=" + choiceCount +
                 '}';
     }
 }
