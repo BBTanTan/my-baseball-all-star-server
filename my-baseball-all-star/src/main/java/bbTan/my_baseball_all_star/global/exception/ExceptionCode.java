@@ -9,6 +9,19 @@ public enum ExceptionCode {
     // 전체
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "예상치 못한 서버에러가 발생했습니다"),
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "잘못된 인자입니다."),
+
+    // PlayMode
+    INVALID_PLAY_MODE(HttpStatus.BAD_REQUEST, "잘못된 경기 모드입니다."),
+
+    // PlayerChoiceCount
+    PLAYER_CHOICE_COUNT_NOT_FOUND(HttpStatus.BAD_REQUEST, "선수 ID가 존재하지 않습니다."),
+
+    // TeamRoaster
+    INVALID_TEAM_PLAYERS_SIZE(HttpStatus.BAD_REQUEST, "한 팀당 선수는 12명이어야 합니다."),
+    MISSING_POSITION_IN_TEAM_ROSTER(HttpStatus.BAD_REQUEST, "팀 명단에 모든 포지션이 포함되어야 합니다."),
+    INVALID_CHOICE_COUNT_SIZE(HttpStatus.BAD_REQUEST, "선수 점수와 선택 횟수의 개수가 일치하지 않습니다."),
+    DUPLICATE_PLAYERS_IN_TEAM_ROSTER(HttpStatus.BAD_REQUEST, "중복된 선수가 존재합니다.")
+
     ;
 
     private final HttpStatus httpStatus;
