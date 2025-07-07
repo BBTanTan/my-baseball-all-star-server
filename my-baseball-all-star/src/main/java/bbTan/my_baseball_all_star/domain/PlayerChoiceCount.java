@@ -2,6 +2,8 @@ package bbTan.my_baseball_all_star.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
@@ -20,9 +22,9 @@ import static lombok.AccessLevel.PROTECTED;
 public class PlayerChoiceCount {
 
     @Id
-    private Long playerId;  // Player.id와 동일하게 사용
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
 
-    @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     private Player player;
@@ -31,6 +33,10 @@ public class PlayerChoiceCount {
 
     @Version
     private Long version;
+
+    public PlayerChoiceCount(Player player) {
+        this.player = player;
+    }
 
     public void increase() {
         this.count++;
@@ -45,19 +51,19 @@ public class PlayerChoiceCount {
             return false;
         }
         PlayerChoiceCount that = (PlayerChoiceCount) o;
-        return Objects.equals(playerId, that.playerId) && Objects.equals(player, that.player)
+        return Objects.equals(Id, that.Id) && Objects.equals(player, that.player)
                 && Objects.equals(count, that.count) && Objects.equals(version, that.version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerId, player, count, version);
+        return Objects.hash(Id, player, count, version);
     }
 
     @Override
     public String toString() {
         return "PlayerChoiceCount{" +
-                "playerId=" + playerId +
+                "Id=" + Id +
                 ", player=" + player +
                 ", count=" + count +
                 ", version=" + version +
