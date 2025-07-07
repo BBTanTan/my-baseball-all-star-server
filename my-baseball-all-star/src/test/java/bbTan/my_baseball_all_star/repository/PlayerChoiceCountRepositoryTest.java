@@ -25,7 +25,7 @@ class PlayerChoiceCountRepositoryTest extends IntegrationTestSupport {
     @Test
     void getById() {
         // given
-        Player player = playerRepository.save(PlayerFixture.PLAYER());
+        Player player = playerRepository.save(PlayerFixture.PLAYER1());
         playerChoiceCountRepository.save(new PlayerChoiceCount(player));
 
         // when

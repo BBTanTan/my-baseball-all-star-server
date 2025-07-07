@@ -46,8 +46,8 @@ class TeamRoasterTest {
     void teamRoasterConstructor_duplicatePlayer_exception() {
         List<Player> players = PlayerFixture.PLAYERS();
         List<Long> counts = PlayerChoiceCountFixture.PLAYER_CHOICE_COUNT_VALUES();
-        players.set(0, PlayerFixture.PLAYER());
-        players.set(1, PlayerFixture.PLAYER());
+        players.set(0, PlayerFixture.PLAYER1());
+        players.set(1, PlayerFixture.PLAYER1());
 
         assertThatThrownBy(() -> new TeamRoaster("test", players, counts))
                 .isInstanceOf(AllStarException.class)
@@ -58,7 +58,7 @@ class TeamRoasterTest {
     @Test
     void teamRoasterConstructor_missingPositions_exception() {
         List<Player> players = PlayerFixture.PLAYERS();
-        players.set(0, PlayerFixture.PLAYER());
+        players.set(0, PlayerFixture.PLAYER1());
 
         List<Long> counts = PlayerChoiceCountFixture.PLAYER_CHOICE_COUNT_VALUES();
 

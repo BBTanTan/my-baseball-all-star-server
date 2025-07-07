@@ -10,8 +10,16 @@ import java.util.List;
 
 public class PlayerFixture {
 
-    public static Player PLAYER() {
-        return new Player("올스타", Club.SAMSUNG_LIONS, Position.CATCHER, LocalDate.now(), 64.35);
+    public static Player PLAYER1() {
+        return new Player("올스타1", Club.SAMSUNG_LIONS, Position.CATCHER, LocalDate.now(), 64.35);
+    }
+
+    public static Player PLAYER2() {
+        return new Player("올스타2", Club.KIA_TIGERS, Position.CENTER_FIELD, LocalDate.now(), 64.35);
+    }
+
+    public static Player PLAYER3() {
+        return new Player("올스타3", Club.DOOSAN_BEARS, Position.CLOSER_PITCHER, LocalDate.now(), 64.35);
     }
 
     public static List<Player> PLAYERS() {
