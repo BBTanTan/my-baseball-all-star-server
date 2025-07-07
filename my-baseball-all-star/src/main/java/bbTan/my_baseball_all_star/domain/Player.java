@@ -36,6 +36,14 @@ public class Player {
 
     private Double score;
 
+    public Player(String name, Club club, Position position, LocalDate dateOfBirth, Double score) {
+        this.name = name;
+        this.club = club;
+        this.position = position;
+        this.dateOfBirth = dateOfBirth;
+        this.score = score;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
