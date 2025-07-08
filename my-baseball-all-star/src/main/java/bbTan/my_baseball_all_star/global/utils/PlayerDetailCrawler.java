@@ -207,7 +207,6 @@ public class PlayerDetailCrawler {
                 //포지션 추가
                 element.add("CATCHER");
 
-                //double avg, int hr, int rbi, double ops, int so, int gdp
                 //세부 능력치 가져오기
                 String avg = row.findElement(By.cssSelector("td:nth-child(2)")).getText();  // AVG
                 String hr = row.findElement(By.cssSelector("td:nth-child(10)")).getText();    // hr
