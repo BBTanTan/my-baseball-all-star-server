@@ -21,8 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PlayerScoreCrawlerService {
-    //선수들의 점수 갱신
-    //하루에 한 번 이루어짐
+
     private final PlayerRepository playerRepository;
 
     @Scheduled(cron = "0 0 3 * * ?") // 매일 오전 3시에 크롤링 작업 수행
