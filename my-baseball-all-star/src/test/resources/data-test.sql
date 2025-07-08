@@ -27,3 +27,23 @@ VALUES (1, 0, 0),
        (10, 0, 0),
        (11, 0, 0),
        (12, 0, 0);
+
+INSERT INTO team (name, total_play_count, win_play_count, created_at)
+VALUES ('TestTeam', 0, 0, NOW());
+
+INSERT INTO team_player (team_id, player_id)
+VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (1, 8),
+    (1, 9),
+    (1, 10),
+    (1, 11),
+    (1, 12);
+
+
