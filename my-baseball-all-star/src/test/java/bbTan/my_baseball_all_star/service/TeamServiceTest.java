@@ -2,11 +2,15 @@ package bbTan.my_baseball_all_star.service;
 
 import bbTan.my_baseball_all_star.IntegrationTestSupport;
 import bbTan.my_baseball_all_star.domain.Team;
+import bbTan.my_baseball_all_star.domain.TeamRoaster;
 import bbTan.my_baseball_all_star.fixture.TeamFixture;
+import bbTan.my_baseball_all_star.fixture.TeamRoasterFixture;
 import bbTan.my_baseball_all_star.repository.TeamRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -66,6 +70,23 @@ class TeamServiceTest extends IntegrationTestSupport {
         assertAll(
                 () -> assertThat(updated.getTotalPlayCount()).isEqualTo(1),
                 () -> assertThat(updated.getWinPlayCount()).isEqualTo(0)
+        );
+    }
+
+    @DisplayName("팀 생성 성공")
+    @Test
+    void createTeam() {
+        // given
+        String teamName = "팀";
+        TeamRoaster teamRoaster = TeamRoasterFixture.VALID_ROSTER(teamName);
+
+        // when
+        Team created = teamService.create(teamRoaster);
+
+        // then
+        assertAll(
+                () -> assertThat(created.getId()).isNotNull(),
+                () -> assertThat(created.getName()).isEqualTo(teamName)
         );
     }
 }
