@@ -11,15 +11,15 @@ import java.util.List;
 public class PlayerFixture {
 
     public static Player PLAYER1() {
-        return new Player("올스타1", Club.SAMSUNG_LIONS, Position.CATCHER, LocalDate.now(), 64.35);
+        return new Player("올스타1", Club.SAMSUNG_LIONS, Position.CATCHER, LocalDate.now(), 64.35, "https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69446.jpg" );
     }
 
     public static Player PLAYER2() {
-        return new Player("올스타2", Club.KIA_TIGERS, Position.CENTER_FIELD, LocalDate.now(), 64.35);
+        return new Player("올스타2", Club.KIA_TIGERS, Position.OUT_FIELD, LocalDate.now(), 64.35, "https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69446.jpg");
     }
 
     public static Player PLAYER3() {
-        return new Player("올스타3", Club.DOOSAN_BEARS, Position.CLOSER_PITCHER, LocalDate.now(), 64.35);
+        return new Player("올스타3", Club.DOOSAN_BEARS, Position.CLOSER_PITCHER, LocalDate.now(), 64.35, "https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69446.jpg");
     }
 
     public static List<Player> PLAYERS() {
@@ -33,7 +33,8 @@ public class PlayerFixture {
                     clubs[i % clubs.length],
                     positions[i],
                     LocalDate.of(1990, 1, 1).plusDays(i),
-                    50.0 + i
+                    50.0 + i,
+                    "https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69446.jpg"
             );
             setId(player, (long) (i + 1));
             players.add(player);
