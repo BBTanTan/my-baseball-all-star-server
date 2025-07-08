@@ -94,7 +94,7 @@ class PlayerChoiceCountServiceTest extends IntegrationTestSupport {
                 try {
                     choiceCountService.increasePlayerChoiceCount(playerId);
                 } finally {
-                    latch.countDown(); // 성공하든 실패하든 무조건 감소
+                    latch.countDown();
                 }
             });
         }
@@ -105,5 +105,4 @@ class PlayerChoiceCountServiceTest extends IntegrationTestSupport {
         PlayerChoiceCount updated = choiceCountRepository.findById(playerId).orElseThrow();
         assertThat(updated.getCount()).isEqualTo((long) threadCount);
     }
-
 }
