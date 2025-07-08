@@ -36,12 +36,15 @@ public class Player {
 
     private Double score;
 
-    public Player(String name, Club club, Position position, LocalDate dateOfBirth, Double score) {
+    private String profileURL;
+
+    public Player(String name, Club club, Position position, LocalDate dateOfBirth, Double score, String profileURL) {
         this.name = name;
         this.club = club;
         this.position = position;
         this.dateOfBirth = dateOfBirth;
         this.score = score;
+        this.profileURL = profileURL;
     }
 
     @Override
@@ -55,12 +58,12 @@ public class Player {
         Player player = (Player) o;
         return Objects.equals(id, player.id) && Objects.equals(name, player.name) && club == player.club
                 && position == player.position && Objects.equals(dateOfBirth, player.dateOfBirth)
-                && Objects.equals(score, player.score);
+                && Objects.equals(score, player.score) && Objects.equals(profileURL, player.profileURL);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, club, position, dateOfBirth, score);
+        return Objects.hash(id, name, club, position, dateOfBirth, score, profileURL);
     }
 
     @Override
@@ -72,6 +75,7 @@ public class Player {
                 ", position=" + position +
                 ", dateOfBirth=" + dateOfBirth +
                 ", score=" + score +
+                ", profileURL" + profileURL +
                 '}';
     }
 }
