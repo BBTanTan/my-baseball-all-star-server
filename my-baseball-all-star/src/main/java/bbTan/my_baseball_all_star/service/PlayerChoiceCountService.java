@@ -28,7 +28,7 @@ public class PlayerChoiceCountService {
     )
     @Transactional
     public void increasePlayerChoiceCount(Long playerId) {
-        PlayerChoiceCount choiceCount = playerChoiceCountRepository.getById(playerId);
+        PlayerChoiceCount choiceCount = playerChoiceCountRepository.getByPlayerId(playerId);
         choiceCount.increase();
     }
 
