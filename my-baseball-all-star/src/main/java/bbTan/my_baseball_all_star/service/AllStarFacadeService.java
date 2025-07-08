@@ -1,8 +1,10 @@
 package bbTan.my_baseball_all_star.service;
 
+import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Team;
@@ -23,11 +25,12 @@ public class AllStarFacadeService {
     private final TeamService teamService;
     private final TeamPlayerService teamPlayerService;
     private final PlayResultService playResultService;
+    private final PlayShareService playShareService;
 
     @Transactional
     public PlayResultResponse soloPlay(SoloPlayRequest request) {
-        TeamRoaster home = makeTeamRoaster(request.homeTeam());
-        TeamRoaster away = makeTeamRoaster(request.awayTeam());
+        TeamRoaster home = makeTeamRoaster(request.homeTeam().teamName(), request.homeTeam().playerIds());
+        TeamRoaster away = makeTeamRoaster(request.awayTeam().teamName(), request.awayTeam().playerIds());
         List<Integer> playResult = play(home, away);
         return PlayResultResponse.of(home, away, playResult);
     }
@@ -36,11 +39,20 @@ public class AllStarFacadeService {
     public PlayResultResponse friendPlay(FriendPlayRequest request) {
         Team homeTeam = teamService.readById(request.homeTeamId());
         TeamRoaster home = makeTeamRoaster(homeTeam);
-        TeamRoaster away = makeTeamRoaster(request.awayTeam());
+        TeamRoaster away = makeTeamRoaster(request.awayTeam().teamName(), request.awayTeam().playerIds());
         List<Integer> playResult = play(home, away);
         playResultService.saveResult(homeTeam, away, playResult);
         teamService.recordMatchResult(request.homeTeamId(), isWin(playResult));
         return PlayResultResponse.of(home, away, playResult);
+    }
+
+    @Transactional
+    public FriendPlayCreateResponse createFriendPlay(FriendPlayCreateRequest request) {
+        TeamRoaster home = makeTeamRoaster(request.teamName(), request.playerIds());
+        Team homeTeam = teamService.create(home);
+        teamPlayerService.createAll(homeTeam, home.getPlayers());
+        String teamUuid = playShareService.createShareUrl(homeTeam, request.password());
+        return new FriendPlayCreateResponse(teamUuid);
     }
 
     private boolean isWin(List<Integer> playResult) {
@@ -49,11 +61,11 @@ public class AllStarFacadeService {
         return homeScore > awayScore;
     }
 
-    private TeamRoaster makeTeamRoaster(TeamRequest teamRequest) {
-        playerChoiceCountService.increasePlayersChoiceCount(teamRequest.playerIds());
-        List<Player> players = playerService.readPlayers(teamRequest.playerIds());
-        List<Long> playerChoiceCounts = playerChoiceCountService.readChoiceCounts(teamRequest.playerIds());
-        return new TeamRoaster(teamRequest.teamName(), players, playerChoiceCounts);
+    private TeamRoaster makeTeamRoaster(String teamName, List<Long> playerIds) {
+        playerChoiceCountService.increasePlayersChoiceCount(playerIds);
+        List<Player> players = playerService.readPlayers(playerIds);
+        List<Long> playerChoiceCounts = playerChoiceCountService.readChoiceCounts(playerIds);
+        return new TeamRoaster(teamName, players, playerChoiceCounts);
     }
 
     private TeamRoaster makeTeamRoaster(Team team) {

@@ -1,9 +1,11 @@
 package bbTan.my_baseball_all_star.service;
 
 import bbTan.my_baseball_all_star.IntegrationTestSupport;
+import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.repository.PlayerChoiceCountRepository;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
@@ -75,6 +77,26 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
                 () -> assertThat(result.awayTeam().teamName()).isEqualTo("AwayTeam"),
                 () -> assertThat(result.homeTeam().teamScore()).isBetween(0, 20),
                 () -> assertThat(result.awayTeam().teamScore()).isBetween(0, 20)
+        );
+    }
+
+    @DisplayName("친구 초대용 경기 생성 성공")
+    @Test
+    void createFriendPlay() {
+        // given
+        List<Long> playerIds = List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 11L, 12L);
+        String teamName = "MyTeam";
+        String password = "password";
+
+        FriendPlayCreateRequest request = new FriendPlayCreateRequest(teamName, playerIds, password);
+
+        // when
+        FriendPlayCreateResponse response = facadeService.createFriendPlay(request);
+
+        // then
+        assertAll(
+                () -> assertThat(response).isNotNull(),
+                () -> assertThat(response.teamUuid()).isNotBlank()
         );
     }
 }
