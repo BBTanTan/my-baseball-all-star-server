@@ -7,4 +7,8 @@ public class TeamFixture {
     public static Team TEAM1() {
         return new Team("팀1");
     }
+
+    public static Team TEAM2() {
+        return new Team("팀2");
+    }
 }
