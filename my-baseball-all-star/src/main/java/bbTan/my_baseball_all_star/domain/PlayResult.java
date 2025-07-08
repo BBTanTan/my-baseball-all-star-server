@@ -30,11 +30,11 @@ public class PlayResult {
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
-    private String opposingTeamName;
+    private String awayTeamName;
 
-    private Integer ownTeamScore;
+    private Integer homeTeamScore;
 
-    private Integer opposingTeam;
+    private Integer awayTeamScore;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -49,14 +49,14 @@ public class PlayResult {
         }
         PlayResult that = (PlayResult) o;
         return Objects.equals(id, that.id) && Objects.equals(team, that.team)
-                && Objects.equals(opposingTeamName, that.opposingTeamName) && Objects.equals(
-                ownTeamScore, that.ownTeamScore) && Objects.equals(opposingTeam, that.opposingTeam)
+                && Objects.equals(awayTeamName, that.awayTeamName) && Objects.equals(homeTeamScore,
+                that.homeTeamScore) && Objects.equals(awayTeamScore, that.awayTeamScore)
                 && Objects.equals(createdAt, that.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, team, opposingTeamName, ownTeamScore, opposingTeam, createdAt);
+        return Objects.hash(id, team, awayTeamName, homeTeamScore, awayTeamScore, createdAt);
     }
 
     @Override
@@ -64,9 +64,9 @@ public class PlayResult {
         return "PlayResult{" +
                 "id=" + id +
                 ", team=" + team +
-                ", opposingTeamName='" + opposingTeamName + '\'' +
-                ", ownTeamScore=" + ownTeamScore +
-                ", opposingTeam=" + opposingTeam +
+                ", awayTeamName='" + awayTeamName + '\'' +
+                ", homeTeamScore=" + homeTeamScore +
+                ", awayTeamScore=" + awayTeamScore +
                 ", createdAt=" + createdAt +
                 '}';
     }

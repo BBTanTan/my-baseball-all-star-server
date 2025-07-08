@@ -27,7 +27,7 @@ public class PlayShare {
 
     private String url;
 
-    private String ownerPassword;
+    private String password;
 
     @Override
     public boolean equals(Object o) {
@@ -39,13 +39,12 @@ public class PlayShare {
         }
         PlayShare playShare = (PlayShare) o;
         return Objects.equals(id, playShare.id) && Objects.equals(team, playShare.team)
-                && Objects.equals(url, playShare.url) && Objects.equals(ownerPassword,
-                playShare.ownerPassword);
+                && Objects.equals(url, playShare.url) && Objects.equals(password, playShare.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, team, url, ownerPassword);
+        return Objects.hash(id, team, url, password);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class PlayShare {
                 "id=" + id +
                 ", team=" + team +
                 ", url='" + url + '\'' +
-                ", ownerPassword='" + ownerPassword + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
