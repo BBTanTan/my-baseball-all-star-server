@@ -26,7 +26,11 @@ public enum ExceptionCode {
     TEAM_NOT_FOUND(HttpStatus.BAD_REQUEST, "팀을 찾을 수 없습니다."),
 
     // PlayResult
-    INVALID_RESULT_SCORE_SIZE(HttpStatus.BAD_REQUEST, "경기 결과는 반드시 두 팀에 대한 점수여야 합니다.")
+    INVALID_RESULT_SCORE_SIZE(HttpStatus.BAD_REQUEST, "경기 결과는 반드시 두 팀에 대한 점수여야 합니다."),
+
+    // PlayShare
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호는 4자 이상 10자 이하여야 합니다."),
+
     ;
 
     private final HttpStatus httpStatus;
