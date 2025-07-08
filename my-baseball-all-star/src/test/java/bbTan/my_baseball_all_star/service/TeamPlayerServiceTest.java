@@ -63,4 +63,21 @@ class TeamPlayerServiceTest extends IntegrationTestSupport {
         // then
         assertThat(players).isEmpty();
     }
+
+    @DisplayName("팀과 선수 리스트로 TeamPlayer들을 생성 성공")
+    @Test
+    void createAll() {
+        // given
+        Team team = teamRepository.save(TeamFixture.TEAM1());
+        Player player1 = playerRepository.save(PlayerFixture.PLAYER1());
+        Player player2 = playerRepository.save(PlayerFixture.PLAYER2());
+        List<Player> players = List.of(player1, player2);
+
+        // when
+        teamPlayerService.createAll(team, players);
+
+        // then
+        List<TeamPlayer> teamPlayers = teamPlayerRepository.findByTeamId(team.getId());
+        assertThat(teamPlayers).hasSize(2);
+    }
 }
