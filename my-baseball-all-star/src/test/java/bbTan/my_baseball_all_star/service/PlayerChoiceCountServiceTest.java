@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -48,7 +46,7 @@ class PlayerChoiceCountServiceTest extends IntegrationTestSupport {
         choiceCountService.increasePlayersChoiceCount(ids);
 
         // then
-        PlayerChoiceCount updated = choiceCountRepository.getById(savedPlayer.getId());
+        PlayerChoiceCount updated = choiceCountRepository.getByPlayerId(savedPlayer.getId());
         assertThat(updated.getCount()).isEqualTo(1L);
     }
 
@@ -62,7 +60,7 @@ class PlayerChoiceCountServiceTest extends IntegrationTestSupport {
         choiceCountService.increasePlayerChoiceCount(playerId);
 
         // then
-        PlayerChoiceCount updated = choiceCountRepository.getById(playerId);
+        PlayerChoiceCount updated = choiceCountRepository.getByPlayerId(playerId);
         assertThat(updated.getCount()).isEqualTo(1L);
     }
 
