@@ -1,4 +1,4 @@
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('원태인', 'SAMSUNG_LIONS', 'STARTING_PITCHER', 54.66, '2000-04-06', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69446.jpg'),
 ('최승용', 'DOOSAN_BEARS', 'STARTING_PITCHER', 35.16, '2001-05-11', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/51264.jpg'),
 ('소형준', 'KT_WIZ', 'STARTING_PITCHER', 60.92, '2001-09-16', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/50030.jpg'),
@@ -10,7 +10,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('라일리', 'NC_DINOS', 'STARTING_PITCHER', 66.41, '1996-07-09', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/55903.jpg'),
 ('로젠버그', 'KIWOOM_HEROES', 'STARTING_PITCHER', 55.0, '1995-07-09', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/55322.jpg');
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('배찬승', 'SAMSUNG_LIONS', 'MIDDLE_PITCHER', 20.16, '2006-01-01', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/55455.jpg'),
 ('이영하', 'DOOSAN_BEARS', 'MIDDLE_PITCHER', 28.76, '1997-11-01', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/66291.jpg'),
 ('원상현', 'KT_WIZ', 'MIDDLE_PITCHER', 26.59, '2004-10-16', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/54063.jpg'),
@@ -22,7 +22,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('손주환', 'NC_DINOS', 'MIDDLE_PITCHER', 27.68, '2002-01-05', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/54904.jpg'),
 ('김성민', 'KIWOOM_HEROES', 'MIDDLE_PITCHER', 15.94, '1994-04-26', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/67828.jpg');
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('이호성', 'SAMSUNG_LIONS', 'CLOSER_PITCHER', 22.17, '2004-08-14', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/53455.jpg'),
 ('김택연', 'DOOSAN_BEARS', 'CLOSER_PITCHER', 34.82, '2005-06-03', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/54263.jpg'),
 ('박영현', 'KT_WIZ', 'CLOSER_PITCHER', 32.62, '2003-10-11', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/52060.jpg'),
@@ -34,7 +34,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('류진욱', 'NC_DINOS', 'CLOSER_PITCHER', 21.66, '1996-10-10', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/65949.jpg'),
 ('주승우', 'KIWOOM_HEROES', 'CLOSER_PITCHER', 30.06, '2000-01-30', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/52330.jpg');
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('강민호', 'SAMSUNG_LIONS', 'CATCHER', 39.46, '1985-08-18', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/74540.jpg'),
 ('양의지', 'DOOSAN_BEARS', 'CATCHER', 45.13, '1987-06-05', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/76232.jpg'),
 ('장성우', 'KT_WIZ', 'CATCHER', 38.42, '1990-01-17', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78548.jpg'),
@@ -46,7 +46,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('김형준', 'NC_DINOS', 'CATCHER', 39.16, '1999-11-02', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/68912.jpg'),
 ('김재현', 'KIWOOM_HEROES', 'CATCHER', 31.38, '1993-03-18', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/62332.jpg');
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('디아즈', 'SAMSUNG_LIONS', 'FIRST_BASE', 0, '1996-11-19', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/54400.jpg'),
 ('양석환', 'DOOSAN_BEARS', 'FIRST_BASE', 0, '1991-07-15', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/64153.jpg'),
 ('문상철', 'KT_WIZ', 'FIRST_BASE', 0, '1991-04-06', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/64007.jpg'),
@@ -57,7 +57,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('채은성', 'HANWHA_EAGLES', 'FIRST_BASE', 0, '1990-02-06', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79192.jpg'),
 ('데이비슨', 'NC_DINOS', 'FIRST_BASE', 0, '1991-03-26', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/54944.jpg'),
 ('최주환', 'KIWOOM_HEROES', 'FIRST_BASE', 0, '1988-02-28', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/76267.jpg');
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('류지혁', 'SAMSUNG_LIONS', 'SECOND_BASE', 0, '1994-01-13', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/62234.jpg'),
 ('강승호', 'DOOSAN_BEARS', 'SECOND_BASE', 0, '1994-02-09', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/63123.jpg'),
 ('김상수', 'KT_WIZ', 'SECOND_BASE', 0, '1990-03-23', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79402.jpg'),
@@ -69,7 +69,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('박민우', 'NC_DINOS', 'SECOND_BASE', 0, '1993-02-06', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/62907.jpg'),
 ('오선진', 'KIWOOM_HEROES', 'SECOND_BASE', 0, '1989-07-07', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78756.jpg');
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('김영웅', 'SAMSUNG_LIONS', 'THIRD_BASE', 0, '2003-08-24', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/52430.jpg'),
 ('임종성', 'DOOSAN_BEARS', 'THIRD_BASE', 0, '2005-03-03', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/54236.jpg'),
 ('허경민', 'KT_WIZ', 'THIRD_BASE', 0, '1990-08-26', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79240.jpg'),
@@ -81,7 +81,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('서호철', 'NC_DINOS', 'THIRD_BASE', 0, '1996-10-16', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69995.jpg'),
 ('송성문', 'KIWOOM_HEROES', 'THIRD_BASE', 0, '1996-08-29', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/65357.jpg');
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('이재현', 'SAMSUNG_LIONS', 'SHORTSTOP', 0, '2003-02-04', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/52415.jpg'),
 ('오명진', 'DOOSAN_BEARS', 'SHORTSTOP', 0, '2001-09-04', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/50208.jpg'),
 ('권동진', 'KT_WIZ', 'SHORTSTOP', 0, '1998-09-12', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/51003.jpg'),
@@ -123,7 +123,7 @@ SELECT p.id, 0, 0
 FROM player p
 WHERE p.name = '네일';
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('구자욱', 'SAMSUNG_LIONS', 'OUT_FIELD', 0, '1993-02-12', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/62404.jpg'),
 ('정수빈', 'DOOSAN_BEARS', 'OUT_FIELD', 0, '1990-10-07', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79231.jpg'),
 ('김민혁', 'KT_WIZ', 'OUT_FIELD', 0, '1995-11-21', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/64004.jpg'),
@@ -155,7 +155,7 @@ INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALU
 ('박건우', 'NC_DINOS', 'OUT_FIELD', 0, '1990-09-08', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79215.jpg'),
 ('이주형', 'KIWOOM_HEROES', 'OUT_FIELD', 0, '2001-04-02', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/50167.jpg');
 
-INSERT INTO player (name, club, position, score, date_of_birth, profileurl) VALUES
+INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
 ('박병호', 'KT_WIZ', 'DESIGNATED_HITTER', 0, '1986-07-10', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78129.jpg'),
 ('김재환', 'DOOSAN_BEARS', 'DESIGNATED_HITTER', 0, '1988-09-19', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79015.jpg'),
 ('안현민', 'SAMSUNG_LIONS', 'DESIGNATED_HITTER', 0, '1999-05-18', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/68939.jpg'),
