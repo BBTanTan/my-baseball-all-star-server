@@ -93,23 +93,18 @@ class PlayerChoiceCountServiceTest extends IntegrationTestSupport {
         // when
         for (int i = 0; i < threadCount; i++) {
             executor.execute(() -> {
-                boolean success = false;
-                while (!success) {
-                    try {
-                        choiceCountService.increasePlayerChoiceCount(playerId);
-                        success = true;
-                    } catch (ObjectOptimisticLockingFailureException e) {
-                        // 낙관적 락 충돌 발생 시 재시도
-                    }
+                try {
+                    choiceCountService.increasePlayerChoiceCount(playerId);
+                } finally {
+                    latch.countDown(); // 성공하든 실패하든 무조건 감소
                 }
-                latch.countDown();
             });
         }
 
         latch.await();
 
         // then
-        PlayerChoiceCount updated = choiceCountRepository.getById(playerId);
+        PlayerChoiceCount updated = choiceCountRepository.findById(playerId).orElseThrow();
         assertThat(updated.getCount()).isEqualTo((long) threadCount);
     }
 
