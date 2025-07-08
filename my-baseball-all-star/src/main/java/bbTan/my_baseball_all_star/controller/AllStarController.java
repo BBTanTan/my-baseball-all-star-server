@@ -1,5 +1,6 @@
 package bbTan.my_baseball_all_star.controller;
 
+import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.service.AllStarFacadeService;
@@ -19,5 +20,10 @@ public class AllStarController {
     @PostMapping("/plays/solo")
     public ResponseEntity<PlayResultResponse> soloPlay(@Valid @RequestBody SoloPlayRequest request) {
         return ResponseEntity.ok(allStarService.soloPlay(request));
+    }
+
+    @PostMapping("/plays/friend")
+    public ResponseEntity<PlayResultResponse> friendPlay(@Valid @RequestBody FriendPlayRequest request) {
+        return ResponseEntity.ok(allStarService.friendPlay(request));
     }
 }

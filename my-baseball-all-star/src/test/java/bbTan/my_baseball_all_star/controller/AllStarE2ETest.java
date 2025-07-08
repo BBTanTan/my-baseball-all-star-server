@@ -52,4 +52,49 @@ class AllStarE2ETest extends AcceptanceTest {
                 .then().log().all()
                 .statusCode(400);
     }
+
+    @DisplayName("친구 경기 성공")
+    @Test
+    void friendPlay() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_REQUEST())
+                .when().post("/plays/friend")
+                .then().log().all()
+                .statusCode(200);
+    }
+
+    @DisplayName("친구 경기 실패: homeTeamId가 null일 경우")
+    @Test
+    void friendPlay_homeTeamIdNull_exception() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_REQUEST_HOME_ID_NULL())
+                .when().post("/plays/friend")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @DisplayName("친구 경기 실패: awayTeam의 팀 이름이 비었을 경우")
+    @Test
+    void friendPlay_awayTeamNameEmpty_exception() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_REQUEST_AWAY_TEAM_NAME_EMPTY())
+                .when().post("/plays/friend")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @DisplayName("친구 경기 실패: awayTeam 선수 목록이 비었을 경우")
+    @Test
+    void friendPlay_awayPlayersEmpty_exception() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_REQUEST_AWAY_PLAYERS_EMPTY())
+                .when().post("/plays/friend")
+                .then().log().all()
+                .statusCode(400);
+    }
+
 }
