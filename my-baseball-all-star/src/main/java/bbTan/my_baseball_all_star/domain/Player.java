@@ -47,6 +47,11 @@ public class Player {
         this.profileURL = profileURL;
     }
 
+    public void updateScore(Double score) {
+        if (score >= 0 && score <= 100)
+            this.score = score;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
