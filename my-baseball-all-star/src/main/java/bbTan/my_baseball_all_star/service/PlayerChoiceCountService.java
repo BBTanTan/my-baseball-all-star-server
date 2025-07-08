@@ -23,12 +23,12 @@ public class PlayerChoiceCountService {
 
     @Retryable(
             value = { ObjectOptimisticLockingFailureException.class },
-            maxAttempts = 5,
+            maxAttempts = 10,
             backoff = @Backoff(delay = 100)
     )
     @Transactional
     public void increasePlayerChoiceCount(Long playerId) {
-        PlayerChoiceCount choiceCount = playerChoiceCountRepository.getById(playerId);
+        PlayerChoiceCount choiceCount = playerChoiceCountRepository.getByPlayerId(playerId);
         choiceCount.increase();
     }
 
