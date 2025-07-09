@@ -29,7 +29,11 @@ public enum ExceptionCode {
     INVALID_RESULT_SCORE_SIZE(HttpStatus.BAD_REQUEST, "경기 결과는 반드시 두 팀에 대한 점수여야 합니다."),
 
     // PlayerScore
-    INVALID_PLAYER_SCORE(HttpStatus.BAD_REQUEST, "유효하지 않은 점수 결과입니다");
+    INVALID_PLAYER_SCORE(HttpStatus.BAD_REQUEST, "유효하지 않은 점수 결과입니다"),
+
+    // PlayShare
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호는 4자 이상 10자 이하여야 합니다.")
+    ;
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -1,7 +1,9 @@
 package bbTan.my_baseball_all_star.controller;
 
+import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
@@ -34,5 +36,10 @@ public class AllStarController {
     @PostMapping("/plays/friend")
     public ResponseEntity<PlayResultResponse> friendPlay(@Valid @RequestBody FriendPlayRequest request) {
         return ResponseEntity.ok(allStarService.friendPlay(request));
+    }
+
+    @PostMapping("/teams")
+    public ResponseEntity<FriendPlayCreateResponse> createFriendPlay(@Valid @RequestBody FriendPlayCreateRequest request) {
+        return ResponseEntity.ok(allStarService.createFriendPlay(request));
     }
 }
