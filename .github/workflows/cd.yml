@@ -32,7 +32,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: my-baseball-all-star-server  # self-hosted runner
+    runs-on: my-baseball-all-star-server  
     steps:
       - name: Download source code
         uses: actions/download-artifact@v4
