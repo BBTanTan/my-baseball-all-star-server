@@ -97,4 +97,48 @@ class AllStarE2ETest extends AcceptanceTest {
                 .statusCode(400);
     }
 
+    @DisplayName("친구 초대용 팀 생성 성공")
+    @Test
+    void createFriendPlay() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_CREATE_REQUEST())
+                .when().post("/teams")
+                .then().log().all()
+                .statusCode(200);
+    }
+
+    @DisplayName("친구 초대용 팀 생성 실패: 팀 이름이 null일 경우")
+    @Test
+    void createFriendPlay_teamNameNull_exception() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_CREATE_REQUEST_TEAM_NAME_NULL())
+                .when().post("/teams")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @DisplayName("친구 초대용 팀 생성 실패: 선수 목록이 비어 있을 경우")
+    @Test
+    void createFriendPlay_playersEmpty_exception() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_CREATE_REQUEST_PLAYERS_EMPTY())
+                .when().post("/teams")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @DisplayName("친구 초대용 팀 생성 실패: 비밀번호가 비어 있을 경우")
+    @Test
+    void createFriendPlay_passwordEmpty_exception() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_CREATE_REQUEST_PASSWORD_EMPTY())
+                .when().post("/teams")
+                .then().log().all()
+                .statusCode(400);
+    }
+
 }
