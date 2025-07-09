@@ -7,10 +7,14 @@ import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
+import bbTan.my_baseball_all_star.domain.PlayerChoiceCount;
 import bbTan.my_baseball_all_star.domain.Team;
 import bbTan.my_baseball_all_star.domain.TeamPlayer;
 import bbTan.my_baseball_all_star.domain.TeamRoaster;
+import java.util.ArrayList;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +58,16 @@ public class AllStarFacadeService {
         teamPlayerService.createAll(homeTeam, home.getPlayers());
         String teamUuid = playShareService.createShareUrl(homeTeam, request.password());
         return new FriendPlayCreateResponse(teamUuid);
+    }
+
+    public TeamPlayerResponse getRandomTeamRoaster() {
+        List<Player> selectedPlayers = playerService.randomPlayerSelection();
+        List<Long> playerIds = selectedPlayers.stream().map(Player::getId).toList();
+
+
+        List<Long> selectedPlayerChoiceCount = playerChoiceCountService.readChoiceCounts(playerIds);
+
+        return TeamPlayerResponse.fromEntity(new TeamRoaster("RANDOM TEAM", selectedPlayers, selectedPlayerChoiceCount));
     }
 
     private boolean isWin(List<Integer> playResult) {

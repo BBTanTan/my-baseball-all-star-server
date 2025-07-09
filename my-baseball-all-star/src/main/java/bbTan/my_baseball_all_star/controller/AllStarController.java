@@ -6,7 +6,10 @@ import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
+import bbTan.my_baseball_all_star.global.exception.AllStarException;
+import bbTan.my_baseball_all_star.global.exception.ExceptionCode;
 import bbTan.my_baseball_all_star.service.AllStarFacadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,6 +36,7 @@ public class AllStarController {
     @GetMapping("/players")
     public ResponseEntity<List<PlayerResponse>> getAllPlayers() {
         return ResponseEntity.ok(allStarService.findAllPlayers());
+    }
 
     @PostMapping("/plays/friend")
     public ResponseEntity<PlayResultResponse> friendPlay(@Valid @RequestBody FriendPlayRequest request) {
@@ -41,5 +46,13 @@ public class AllStarController {
     @PostMapping("/teams")
     public ResponseEntity<FriendPlayCreateResponse> createFriendPlay(@Valid @RequestBody FriendPlayCreateRequest request) {
         return ResponseEntity.ok(allStarService.createFriendPlay(request));
+    }
+    @GetMapping
+    public ResponseEntity<TeamPlayerResponse> getRandomTeams(@RequestParam(value = "mode", required = false) String mode) {
+        if ("random".equalsIgnoreCase(mode)) {
+            return ResponseEntity.ok(allStarService.getRandomTeamRoaster());
+        } else {
+            throw new AllStarException(ExceptionCode.INVALID_REQUEST_PATH);
+        }
     }
 }
