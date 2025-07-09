@@ -13,11 +13,8 @@ public enum Position {
     SECOND_BASE(6, "2루수"),
     THIRD_BASE(7, "3루수"),
     SHORTSTOP(8, "유격수"),
-    LEFT_FIELD(9, "좌익수"),
-    CENTER_FIELD(10, "중견수"),
-    RIGHT_FIELD(11, "우익수"),
-    DESIGNATED_HITTER(12, "지명타자"),
-    OUT_FIELD(13, "외야수");
+    OUT_FIELD(9, "외야수"),
+    DESIGNATED_HITTER(10, "지명타자");
 
     private final int id;
     private final String name;
