@@ -1,5 +1,6 @@
 package bbTan.my_baseball_all_star.service;
 
+import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,5 +17,12 @@ public class PlayerService {
     @Transactional(readOnly = true)
     public List<Player> readPlayers(List<Long> playerIds) {
         return playerRepository.findAllById(playerIds);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PlayerResponse> readAllPlayers() {
+        return playerRepository.findAll().stream()
+                .map(PlayerResponse::fromEntity)
+                .toList();
     }
 }

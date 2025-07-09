@@ -1,18 +1,18 @@
 package bbTan.my_baseball_all_star.service;
 
 import bbTan.my_baseball_all_star.IntegrationTestSupport;
+import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
-import bbTan.my_baseball_all_star.domain.Position;
 import bbTan.my_baseball_all_star.fixture.PlayerFixture;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class PlayerServiceTest extends IntegrationTestSupport {
 
@@ -39,5 +39,19 @@ class PlayerServiceTest extends IntegrationTestSupport {
         assertThat(result).extracting(Player::getId)
                 .containsExactlyInAnyOrder(p1.getId(), p3.getId());
     }
+
+    @DisplayName("모든 선수 정보 조회")
+    @Test
+    void findAllPlayers() {
+        // when
+        List<PlayerResponse> players = playerService.readAllPlayers();
+
+        // then
+        assertAll(
+                () -> assertThat(players).hasSize(12),
+                () -> assertThat(players).isNotEmpty()
+        );
+    }
+
 
 }
