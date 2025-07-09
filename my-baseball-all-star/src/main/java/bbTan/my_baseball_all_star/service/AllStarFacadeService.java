@@ -3,6 +3,7 @@ package bbTan.my_baseball_all_star.service;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.TeamRoaster;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,10 @@ public class AllStarFacadeService {
         List<Player> players = playerService.readPlayers(teamRequest.playerIds());
         List<Long> playerChoiceCounts = playerChoiceCountService.readChoiceCounts(teamRequest.playerIds());
         return new TeamRoaster(teamRequest.teamName(), players, playerChoiceCounts);
+    }
+
+    @Transactional
+    public List<PlayerResponse> findAllPlayers() {
+        return playerService.readAllPlayers();
     }
 }
