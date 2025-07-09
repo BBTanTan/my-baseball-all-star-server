@@ -5,6 +5,7 @@ import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
@@ -85,7 +86,7 @@ public class AllStarFacadeService {
 
     @Transactional
     public List<PlayerResponse> findAllPlayers() {
-        return playerService.readAllPlayers();
+        return playerService.readAllPlayers(); // TODO: DTO를 파사드 서비스가 만들도록 수정
     }
 
     private TeamRoaster makeTeamRoaster(Team team) {
@@ -96,9 +97,15 @@ public class AllStarFacadeService {
         return new TeamRoaster(team.getName(), players, playerChoiceCounts);
     }
 
-    public List<Integer> play(TeamRoaster home, TeamRoaster away) {
+    private List<Integer> play(TeamRoaster home, TeamRoaster away) {
         Integer homeTeamScore = TeamScoreCalculator.calculate(home);
         Integer awayTeamScore = TeamScoreCalculator.calculate(away);
         return List.of(homeTeamScore, awayTeamScore);
+    }
+
+    @Transactional(readOnly = true)
+    public FriendPlayTeamResponse readFriendPlayTeam(String teamUrl) {
+        Team team = playShareService.readTeamByUrl(teamUrl);
+        return new FriendPlayTeamResponse(team.getId(), team.getName());
     }
 }

@@ -32,7 +32,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: my-baseball-all-star-server  # self-hosted runner
+    runs-on: my-baseball-all-star-server  
     steps:
       - name: Download source code
         uses: actions/download-artifact@v4
@@ -40,10 +40,13 @@ jobs:
           name: source-code
           path: ./my-baseball-all-star
 
+      - name: Give execute permission for gradlew
+        run: chmod +x ./my-baseball-all-star/gradlew
+
       - name: Build Docker image
         run: |
           cd my-baseball-all-star
-          docker build -t my-baseball-all-star-app .
+          docker build --platform linux/amd64 -t my-baseball-all-star-app .
 
       - name: Stop and remove existing container if running
         run: |

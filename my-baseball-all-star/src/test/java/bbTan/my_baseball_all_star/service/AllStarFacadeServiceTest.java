@@ -6,9 +6,15 @@ import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
+import bbTan.my_baseball_all_star.domain.PlayShare;
+import bbTan.my_baseball_all_star.domain.Team;
+import bbTan.my_baseball_all_star.fixture.TeamFixture;
+import bbTan.my_baseball_all_star.repository.PlayShareRepository;
 import bbTan.my_baseball_all_star.repository.PlayerChoiceCountRepository;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
+import bbTan.my_baseball_all_star.repository.TeamRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +29,19 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
     AllStarFacadeService allStarFacadeService;
 
     @Autowired
+    private AllStarFacadeService facadeService;
+
+    @Autowired
     PlayerRepository playerRepository;
 
     @Autowired
     PlayerChoiceCountRepository playerChoiceCountRepository;
 
     @Autowired
-    private AllStarFacadeService facadeService;
+    TeamRepository teamRepository;
+
+    @Autowired
+    PlayShareRepository playShareRepository;
 
     @Test
     @DisplayName("홀로 경기 성공")
@@ -99,4 +111,24 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
                 () -> assertThat(response.teamUuid()).isNotBlank()
         );
     }
+
+    @DisplayName("친구 초대용 경기 팀 조회 성공")
+    @Test
+    void readFriendPlayTeam() {
+        // given
+        Team team = teamRepository.save(TeamFixture.TEAM1());
+        PlayShare playShare = playShareRepository.save(new PlayShare(team, "1234"));
+        String teamUrl = playShare.getUrl();
+
+        // when
+        FriendPlayTeamResponse response = facadeService.readFriendPlayTeam(teamUrl);
+
+        // then
+        assertAll(
+                () -> assertThat(response).isNotNull(),
+                () -> assertThat(response.teamId()).isEqualTo(team.getId()),
+                () -> assertThat(response.teamName()).isEqualTo(team.getName())
+        );
+    }
+
 }

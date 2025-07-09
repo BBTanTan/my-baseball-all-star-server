@@ -4,6 +4,7 @@ import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
@@ -15,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,5 +56,10 @@ public class AllStarController {
         } else {
             throw new AllStarException(ExceptionCode.INVALID_REQUEST_PATH);
         }
+    }
+
+    @GetMapping("/teams/{team-uuid}")
+    public ResponseEntity<FriendPlayTeamResponse> readFriendPlayTeam(@PathVariable("team-uuid") String teamUrl) {
+        return ResponseEntity.ok(allStarService.readFriendPlayTeam(teamUrl));
     }
 }
