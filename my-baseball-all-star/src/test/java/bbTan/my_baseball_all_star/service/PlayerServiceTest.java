@@ -1,6 +1,7 @@
 package bbTan.my_baseball_all_star.service;
 
 import bbTan.my_baseball_all_star.IntegrationTestSupport;
+import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Position;
 import bbTan.my_baseball_all_star.fixture.PlayerFixture;
@@ -39,5 +40,17 @@ class PlayerServiceTest extends IntegrationTestSupport {
         assertThat(result).extracting(Player::getId)
                 .containsExactlyInAnyOrder(p1.getId(), p3.getId());
     }
+
+    @DisplayName("모든 선수 정보 조회")
+    @Test
+    void findAllPlayers() {
+        // when
+        List<PlayerResponse> players = playerService.readAllPlayers();
+
+        // then
+        assertThat(players).isNotEmpty();
+        assertThat(players).hasSize(12); // 대략적인 개수 검증
+    }
+
 
 }
