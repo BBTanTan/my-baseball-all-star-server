@@ -16,9 +16,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./my-baseball-all-star/gradlew
-
       - name: Write application.yml
         env:
           APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
@@ -26,11 +23,6 @@ jobs:
         run: |
           echo "${APPLICATION_YML}" > my-baseball-all-star/src/main/resources/application.yml
           echo "${APPLICATION_TEST_YML}" > my-baseball-all-star/src/test/resources/application-test.yml
-
-      - name: Build with Gradle
-        run: |
-          cd my-baseball-all-star
-          ./gradlew clean build -x test --no-daemon --no-build-cache
 
       - name: Upload source to artifact
         uses: actions/upload-artifact@v4
@@ -48,10 +40,13 @@ jobs:
           name: source-code
           path: ./my-baseball-all-star
 
+      - name: Give execute permission for gradlew
+        run: chmod +x ./my-baseball-all-star/gradlew
+
       - name: Build Docker image
         run: |
           cd my-baseball-all-star
-          docker build -t my-baseball-all-star-app .
+          docker build --platform linux/amd64 -t my-baseball-all-star-app .
 
       - name: Stop and remove existing container if running
         run: |
