@@ -15,7 +15,8 @@ CREATE TABLE player
     club          VARCHAR(255) NOT NULL,
     position      VARCHAR(255) NOT NULL,
     date_of_birth DATE         NOT NULL,
-    score         DOUBLE
+    score         DOUBLE,
+    profile_url   VARCHAR(255) NOT NULL
 );
 
 -- player_choice_count (선택 수 관리)
