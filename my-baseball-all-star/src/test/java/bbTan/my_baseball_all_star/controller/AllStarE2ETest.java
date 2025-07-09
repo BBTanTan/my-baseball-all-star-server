@@ -7,6 +7,8 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.Matchers.notNullValue;
+
 class AllStarE2ETest extends AcceptanceTest {
 
     @DisplayName("홀로 경기 성공")
@@ -141,4 +143,28 @@ class AllStarE2ETest extends AcceptanceTest {
                 .statusCode(400);
     }
 
+    @DisplayName("친구 초대용 팀 조회 성공")
+    @Test
+    void readFriendPlayTeam() {
+        // given
+        String teamUuid = RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(AllStarRequestFixture.FRIEND_PLAY_CREATE_REQUEST())
+                .when().post("/teams")
+                .then().log().all()
+                .statusCode(200)
+                .extract()
+                .body()
+                .jsonPath()
+                .getString("teamUuid");
+
+        // when & then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .when().get("/teams/{team-uuid}", teamUuid)
+                .then().log().all()
+                .statusCode(200)
+                .body("teamId", notNullValue())
+                .body("teamName", notNullValue());
+    }
 }

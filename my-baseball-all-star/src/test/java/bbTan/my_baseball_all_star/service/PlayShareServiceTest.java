@@ -11,6 +11,7 @@ import bbTan.my_baseball_all_star.repository.TeamRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,6 +51,7 @@ class PlayShareServiceTest extends IntegrationTestSupport {
 
     @DisplayName("URL로 팀 조회 성공")
     @Test
+    @Transactional
     void readTeamByUrl() {
         // given
         Team team = teamRepository.save(TeamFixture.TEAM1());
@@ -67,6 +69,7 @@ class PlayShareServiceTest extends IntegrationTestSupport {
 
     @DisplayName("URL로 팀 조회 실패 : 존재하지 않는 URL인 경우")
     @Test
+    @Transactional
     void readTeamByUrl_notFound_exception() {
         // given
         String nonExistentUrl = "non-existent-url";
