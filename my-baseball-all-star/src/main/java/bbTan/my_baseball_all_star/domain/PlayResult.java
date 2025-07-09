@@ -39,6 +39,13 @@ public class PlayResult {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    public PlayResult(Team homeTeam, String awayTeamName, Integer homeTeamScore, Integer awayTeamScore) {
+        this.team = homeTeam;
+        this.awayTeamName = awayTeamName;
+        this.homeTeamScore = homeTeamScore;
+        this.awayTeamScore = awayTeamScore;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

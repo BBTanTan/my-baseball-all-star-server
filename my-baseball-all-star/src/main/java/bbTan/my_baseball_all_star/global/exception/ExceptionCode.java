@@ -20,9 +20,16 @@ public enum ExceptionCode {
     INVALID_TEAM_PLAYERS_SIZE(HttpStatus.BAD_REQUEST, "한 팀당 선수는 12명이어야 합니다."),
     MISSING_POSITION_IN_TEAM_ROSTER(HttpStatus.BAD_REQUEST, "팀 명단에 모든 포지션이 포함되어야 합니다."),
     INVALID_CHOICE_COUNT_SIZE(HttpStatus.BAD_REQUEST, "선수 점수와 선택 횟수의 개수가 일치하지 않습니다."),
-    DUPLICATE_PLAYERS_IN_TEAM_ROSTER(HttpStatus.BAD_REQUEST, "중복된 선수가 존재합니다.")
+    DUPLICATE_PLAYERS_IN_TEAM_ROSTER(HttpStatus.BAD_REQUEST, "중복된 선수가 존재합니다."),
 
-    ;
+    // Team
+    TEAM_NOT_FOUND(HttpStatus.BAD_REQUEST, "팀을 찾을 수 없습니다."),
+
+    // PlayResult
+    INVALID_RESULT_SCORE_SIZE(HttpStatus.BAD_REQUEST, "경기 결과는 반드시 두 팀에 대한 점수여야 합니다."),
+
+    // PlayerScore
+    INVALID_PLAYER_SCORE(HttpStatus.BAD_REQUEST, "유효하지 않은 점수 결과입니다");
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +23,6 @@ public class PlayerService {
     public List<PlayerResponse> readAllPlayers() {
         return playerRepository.findAll().stream()
                 .map(PlayerResponse::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

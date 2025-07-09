@@ -11,57 +11,34 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      
+
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
-      with:
-        gradle-version: 8.8
+      - name: Write application.yml
+        env:
+          APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
+          APPLICATION_TEST_YML: ${{ secrets.APPLICATION_TEST_YML }}
+        run: |
+          echo "${APPLICATION_YML}" > my-baseball-all-star/src/main/resources/application.yml
+          echo "${APPLICATION_TEST_YML}" > my-baseball-all-star/src/test/resources/application-test.yml
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x my-baseball-all-star/gradlew
-
-    - name: Write application.yml
-      env:
-        APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
-        APPLICATION_TEST_YML: ${{ secrets.APPLICATION_TEST_YML }}
-        
-      run: |
-        echo "${APPLICATION_YML}" > my-baseball-all-star/src/main/resources/application.yml
-        echo "${APPLICATION_TEST_YML}" > my-baseball-all-star/src/test/resources/application-test.yml
-
-    - name: Build with Gradle
-      run: ./gradlew clean build
-      working-directory: my-baseball-all-star
-
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v4
-      with:
-        working-directory: my-baseball-all-star
-        name: my-baseball-all-star-jar
-        path: ./**/*.jar
+      - name: Upload source to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-code
+          path: my-baseball-all-star
 
   deploy:
     needs: build
-    runs-on: my-baseball-all-star-server  
-
+    runs-on: my-baseball-all-star-server  # self-hosted runner
     steps:
-      - name: Change permission for runner workspace
-        run: sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/my-baseball-all-star
-
-      - name: Download build artifact
+      - name: Download source code
         uses: actions/download-artifact@v4
         with:
-          name: my-baseball-all-star-jar
+          name: source-code
+          path: ./my-baseball-all-star
 
       - name: Build Docker image
         run: |

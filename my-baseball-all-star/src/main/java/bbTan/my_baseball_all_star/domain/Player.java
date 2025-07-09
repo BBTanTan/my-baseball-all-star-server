@@ -1,5 +1,7 @@
 package bbTan.my_baseball_all_star.domain;
 
+import bbTan.my_baseball_all_star.global.exception.AllStarException;
+import bbTan.my_baseball_all_star.global.exception.ExceptionCode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -48,8 +49,10 @@ public class Player {
     }
 
     public void updateScore(Double score) {
-        if (score >= 0 && score <= 100)
-            this.score = score;
+        if (score >= 0 && score <= 100) {
+            throw  new AllStarException(ExceptionCode.INVALID_PLAYER_SCORE);
+        }
+        this.score = score;
     }
 
     @Override

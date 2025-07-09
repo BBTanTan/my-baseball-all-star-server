@@ -1,6 +1,7 @@
 package bbTan.my_baseball_all_star.service;
 
 import bbTan.my_baseball_all_star.IntegrationTestSupport;
+import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
@@ -18,8 +19,10 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
 
     @Autowired
     AllStarFacadeService allStarFacadeService;
+
     @Autowired
     PlayerRepository playerRepository;
+
     @Autowired
     PlayerChoiceCountRepository playerChoiceCountRepository;
 
@@ -51,4 +54,27 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
         );
     }
 
+    @Test
+    @DisplayName("친구와 경기 성공")
+    void friendPlay() {
+        // given
+        Long homeTeamId = 1L;
+        List<Long> playerIds = List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 11L, 12L);
+        TeamRequest awayTeamRequest = new TeamRequest("AwayTeam", playerIds);
+        FriendPlayRequest request = new FriendPlayRequest(homeTeamId, awayTeamRequest);
+
+        // when
+        PlayResultResponse result = facadeService.friendPlay(request);
+
+        // then
+        assertAll(
+                () -> assertThat(result).isNotNull(),
+                () -> assertThat(result.homeTeam()).isNotNull(),
+                () -> assertThat(result.awayTeam()).isNotNull(),
+                () -> assertThat(result.homeTeam().teamName()).isNotEmpty(),
+                () -> assertThat(result.awayTeam().teamName()).isEqualTo("AwayTeam"),
+                () -> assertThat(result.homeTeam().teamScore()).isBetween(0, 20),
+                () -> assertThat(result.awayTeam().teamScore()).isBetween(0, 20)
+        );
+    }
 }
