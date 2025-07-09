@@ -71,7 +71,7 @@ public class AllStarFacadeService {
 
     @Transactional
     public List<PlayerResponse> findAllPlayers() {
-        return playerService.readAllPlayers();
+        return playerService.readAllPlayers(); // TODO: DTO를 파사드 서비스가 만들도록 수정
     }
 
     private TeamRoaster makeTeamRoaster(Team team) {

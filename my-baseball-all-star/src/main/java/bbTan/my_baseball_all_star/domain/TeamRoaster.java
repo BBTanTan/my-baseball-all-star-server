@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,8 @@ import static lombok.AccessLevel.PROTECTED;
 public class TeamRoaster {
 
     private static final int TEAM_PLAYER_COUNT = 12;
+    public static final int OUT_FIELD_VALID_COUNT = 3;
+    public static final int POSITION_VALID_COUNT = 1;
 
     private String name;
     private List<Player> players;
@@ -53,13 +56,20 @@ public class TeamRoaster {
     }
 
     private void validateAllPositions(List<Player> players) {
-        boolean isAllPositionsUsedExactlyOnce = players.stream()
-                .map(Player::getPosition)
-                .collect(Collectors.toSet())
-                .containsAll(Arrays.asList(Position.values()));
-        if (!isAllPositionsUsedExactlyOnce) {
+        Map<Position, Long> positionCountMap = players.stream()
+                .collect(Collectors.groupingBy(Player::getPosition, Collectors.counting()));
+        boolean isAllPositionsValid = Arrays.stream(Position.values())
+                .allMatch(position -> isValidCount(position, positionCountMap.getOrDefault(position, 0L)));
+        if (!isAllPositionsValid) {
             throw new AllStarException(ExceptionCode.MISSING_POSITION_IN_TEAM_ROSTER);
         }
+    }
+
+    private boolean isValidCount(Position position, long count) {
+        if (position == Position.OUT_FIELD) {
+            return count == OUT_FIELD_VALID_COUNT;
+        }
+        return count == POSITION_VALID_COUNT;
     }
 
     private void validatePlayerChoiceCounts(List<Long> playerChoiceCounts) {

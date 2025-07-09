@@ -32,6 +32,7 @@ public class AllStarController {
     @GetMapping("/players")
     public ResponseEntity<List<PlayerResponse>> getAllPlayers() {
         return ResponseEntity.ok(allStarService.findAllPlayers());
+    }
 
     @PostMapping("/plays/friend")
     public ResponseEntity<PlayResultResponse> friendPlay(@Valid @RequestBody FriendPlayRequest request) {
