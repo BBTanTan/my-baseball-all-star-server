@@ -28,6 +28,11 @@ public class TeamPlayer {
     @ManyToOne(fetch = FetchType.LAZY)
     private Player player;
 
+    public TeamPlayer(Team team, Player player) {
+        this.team = team;
+        this.player = player;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

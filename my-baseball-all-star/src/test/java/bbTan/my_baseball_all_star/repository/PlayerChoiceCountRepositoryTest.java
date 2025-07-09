@@ -21,25 +21,25 @@ class PlayerChoiceCountRepositoryTest extends IntegrationTestSupport {
     @Autowired
     private PlayerRepository playerRepository;
 
-    @DisplayName("PlayerChoiceCount 갖고 오기 성공")
+    @DisplayName("Player Id로 PlayerChoiceCount 갖고 오기 성공")
     @Test
-    void getById() {
+    void getByPlayerId() {
         // given
         Player player = playerRepository.save(PlayerFixture.PLAYER1());
         playerChoiceCountRepository.save(new PlayerChoiceCount(player));
 
         // when
-        PlayerChoiceCount found = playerChoiceCountRepository.getById(player.getId());
+        PlayerChoiceCount found = playerChoiceCountRepository.getByPlayerId(player.getId());
 
         // then
         assertThat(found.getPlayer().getId()).isEqualTo(player.getId());
     }
 
-    @DisplayName("PlayerChoiceCount 갖고 오기 실패: 존재하지 않음")
+    @DisplayName("Player Id로 PlayerChoiceCount 갖고 오기 실패: 존재하지 않음")
     @Test
-    void getById_notFound_exception() {
+    void getByPlayerId_notFound_exception() {
         // expect
-        assertThatThrownBy(() -> playerChoiceCountRepository.getById(999L))
+        assertThatThrownBy(() -> playerChoiceCountRepository.getByPlayerId(999L))
                 .isInstanceOf(AllStarException.class)
                 .hasMessage(ExceptionCode.PLAYER_CHOICE_COUNT_NOT_FOUND.getMessage());
     }

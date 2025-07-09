@@ -1,5 +1,6 @@
 package bbTan.my_baseball_all_star.fixture;
 
+import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import java.util.List;
@@ -30,5 +31,21 @@ public class AllStarRequestFixture {
     public static TeamRequest TEAM_REQUEST_PLAYERS_EMPTY(String teamName) {
         List<Long> playerIds = List.of();
         return new TeamRequest(teamName, playerIds);
+    }
+
+    public static FriendPlayRequest FRIEND_PLAY_REQUEST() {
+        return new FriendPlayRequest(1L, TEAM_REQUEST("away"));
+    }
+
+    public static FriendPlayRequest FRIEND_PLAY_REQUEST_HOME_ID_NULL() {
+        return new FriendPlayRequest(null, TEAM_REQUEST("away"));
+    }
+
+    public static FriendPlayRequest FRIEND_PLAY_REQUEST_AWAY_TEAM_NAME_EMPTY() {
+        return new FriendPlayRequest(1L, TEAM_REQUEST(null));
+    }
+
+    public static FriendPlayRequest FRIEND_PLAY_REQUEST_AWAY_PLAYERS_EMPTY() {
+        return new FriendPlayRequest(1L, TEAM_REQUEST_PLAYERS_EMPTY("away"));
     }
 }

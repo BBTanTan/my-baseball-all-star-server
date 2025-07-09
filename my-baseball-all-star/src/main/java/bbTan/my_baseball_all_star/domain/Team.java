@@ -34,6 +34,12 @@ public class Team {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    public Team(String name) {
+        this.name = name;
+        this.totalPlayCount = 0L;
+        this.winPlayCount = 0L;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
