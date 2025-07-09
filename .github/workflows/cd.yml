@@ -16,6 +16,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
       - name: Write application.yml
         env:
           APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
@@ -23,6 +29,11 @@ jobs:
         run: |
           echo "${APPLICATION_YML}" > my-baseball-all-star/src/main/resources/application.yml
           echo "${APPLICATION_TEST_YML}" > my-baseball-all-star/src/test/resources/application-test.yml
+
+      - name: Build with Gradle
+        run: |
+          cd my-baseball-all-star
+          ./gradlew clean build -x test --no-daemon --no-build-cache
 
       - name: Upload source to artifact
         uses: actions/upload-artifact@v4
