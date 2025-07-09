@@ -8,6 +8,7 @@ import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
 import bbTan.my_baseball_all_star.domain.PlayShare;
 import bbTan.my_baseball_all_star.domain.Team;
 import bbTan.my_baseball_all_star.fixture.TeamFixture;
@@ -22,6 +23,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AllStarFacadeServiceTest extends IntegrationTestSupport {
 
@@ -131,4 +134,16 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
         );
     }
 
+    @Test
+    @DisplayName("랜덤 팀 생성 성공")
+    void makeRandomTeamRoaster() {
+        // when
+        TeamPlayerResponse response = facadeService.makeRandomTeamRoaster();
+
+        // then
+        assertAll(
+                () -> assertNotNull(response, "응답 객체는 null이면 안 됩니다."),
+                () -> assertEquals(12, response.players().size(), "선수는 12명이어야 합니다.")
+        );
+    }
 }

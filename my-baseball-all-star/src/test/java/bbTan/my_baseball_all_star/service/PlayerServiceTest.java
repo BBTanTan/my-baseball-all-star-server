@@ -3,8 +3,11 @@ package bbTan.my_baseball_all_star.service;
 import bbTan.my_baseball_all_star.IntegrationTestSupport;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
+import bbTan.my_baseball_all_star.domain.Position;
 import bbTan.my_baseball_all_star.fixture.PlayerFixture;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PlayerServiceTest extends IntegrationTestSupport {
 
@@ -53,5 +58,22 @@ class PlayerServiceTest extends IntegrationTestSupport {
         );
     }
 
+    @DisplayName("랜덤으로 선수 추출")
+    @Test
+    void selectRandomPlayers() {
+        //when
+        List<Player> selectedPlayers = playerService.randomPlayerSelection();
+
+        // then
+        assertAll(
+                () -> assertNotNull(selectedPlayers, "결과는 null이 아니어야 한다."),
+                () -> {
+                    Set<Position> positions = selectedPlayers.stream()
+                            .map(Player::getPosition)
+                            .collect(Collectors.toSet());
+                    assertEquals(positions.size(), 10, "포지션이 중복되지 않아야 한다.");
+                }
+        );
+    }
 
 }

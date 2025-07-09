@@ -8,7 +8,6 @@ import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
-import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.global.exception.AllStarException;
 import bbTan.my_baseball_all_star.global.exception.ExceptionCode;
 import bbTan.my_baseball_all_star.service.AllStarFacadeService;
@@ -49,10 +48,11 @@ public class AllStarController {
     public ResponseEntity<FriendPlayCreateResponse> createFriendPlay(@Valid @RequestBody FriendPlayCreateRequest request) {
         return ResponseEntity.ok(allStarService.createFriendPlay(request));
     }
-    @GetMapping
+
+    @GetMapping("/teams")
     public ResponseEntity<TeamPlayerResponse> getRandomTeams(@RequestParam(value = "mode", required = false) String mode) {
         if ("random".equalsIgnoreCase(mode)) {
-            return ResponseEntity.ok(allStarService.getRandomTeamRoaster());
+            return ResponseEntity.ok(allStarService.makeRandomTeamRoaster());
         } else {
             throw new AllStarException(ExceptionCode.INVALID_REQUEST_PATH);
         }

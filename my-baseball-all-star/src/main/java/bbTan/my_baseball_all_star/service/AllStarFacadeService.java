@@ -3,24 +3,18 @@ package bbTan.my_baseball_all_star.service;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
-import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
-import bbTan.my_baseball_all_star.domain.PlayerChoiceCount;
 import bbTan.my_baseball_all_star.domain.Team;
-import bbTan.my_baseball_all_star.domain.TeamPlayer;
 import bbTan.my_baseball_all_star.domain.TeamRoaster;
-import java.util.ArrayList;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -61,7 +55,7 @@ public class AllStarFacadeService {
         return new FriendPlayCreateResponse(teamUuid);
     }
 
-    public TeamPlayerResponse getRandomTeamRoaster() {
+    public TeamPlayerResponse makeRandomTeamRoaster() {
         List<Player> selectedPlayers = playerService.randomPlayerSelection();
         List<Long> playerIds = selectedPlayers.stream().map(Player::getId).toList();
 

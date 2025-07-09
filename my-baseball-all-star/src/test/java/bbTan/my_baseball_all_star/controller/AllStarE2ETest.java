@@ -7,6 +7,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 class AllStarE2ETest extends AcceptanceTest {
@@ -167,4 +168,43 @@ class AllStarE2ETest extends AcceptanceTest {
                 .body("teamId", notNullValue())
                 .body("teamName", notNullValue());
     }
+
+    @DisplayName("랜덤 팀 생성 성공")
+    @Test
+    void getRandomTeams() {
+        RestAssured
+                .given().log().all()
+                .queryParam("mode", "random")
+                .when()
+                .get("/teams")
+                .then().log().all()
+                .statusCode(200)
+                .body("players.size()", equalTo(12))
+                .extract()
+                .jsonPath();
+    }
+
+    @DisplayName("랜덤 팀 생성 실패 : 잘못된 mode 값")
+    @Test
+    void getRandomTeams_wrong_mode_exception() {
+        RestAssured
+                .given().log().all()
+                .queryParam("mode", "wrong")
+                .when()
+                .get("/teams")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @DisplayName("랜덤 팀 생성 실패 : 파라미터 누락")
+    @Test
+    void getRandomTeams_missing_parameter_exception() {
+        RestAssured
+                .given().log().all()
+                .when()
+                .get("/teams")
+                .then().log().all()
+                .statusCode(400);
+    }
+
 }
