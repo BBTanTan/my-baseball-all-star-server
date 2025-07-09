@@ -23,21 +23,27 @@ public class PlayerFixture {
     }
 
     public static List<Player> PLAYERS() {
-        Position[] positions = Position.values();
-        Club[] clubs = Club.values();
         List<Player> players = new ArrayList<>();
+        Club[] clubs = Club.values();
+        int clubIndex = 0;
+        long id = 1L;
 
-        for (int i = 0; i < positions.length; i++) {
-            Player player = new Player(
-                    "Player" + (i + 1),
-                    clubs[i % clubs.length],
-                    positions[i],
-                    LocalDate.of(1990, 1, 1).plusDays(i),
-                    50.0 + i,
-                    "https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69446.jpg"
-            );
-            setId(player, (long) (i + 1));
-            players.add(player);
+        for (Position position : Position.values()) {
+            int count = position == Position.OUT_FIELD ? 3 : 1;
+            for (int i = 0; i < count; i++) {
+                Player player = new Player(
+                        "Player" + id,
+                        clubs[clubIndex % clubs.length],
+                        position,
+                        LocalDate.of(1990, 1, 1).plusDays(id),
+                        50.0 + id,
+                        "https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/69446.jpg"
+                );
+                setId(player, id);
+                players.add(player);
+                id++;
+                clubIndex++;
+            }
         }
 
         return players;
