@@ -26,4 +26,9 @@ public class PlayResultService {
         PlayResult playResult = new PlayResult(home, away.getName(), playResultScore.get(0), playResultScore.get(1));
         playResultRepository.save(playResult);
     }
+
+    @Transactional(readOnly = true)
+    public List<PlayResult> readByTeam(Team team) {
+        return playResultRepository.findByTeamId(team.getId());
+    }
 }

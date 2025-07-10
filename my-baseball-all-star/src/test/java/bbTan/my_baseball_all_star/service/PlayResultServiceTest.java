@@ -67,4 +67,31 @@ class PlayResultServiceTest extends IntegrationTestSupport {
                 .isInstanceOf(AllStarException.class)
                 .hasMessageContaining(ExceptionCode.INVALID_RESULT_SCORE_SIZE.getMessage());
     }
+
+    @DisplayName("팀으로 경기 결과 조회 성공")
+    @Test
+    void readByTeam() {
+        // given
+        Team home = teamRepository.save(TeamFixture.TEAM1());
+        TeamRoaster away1 = TeamRoasterFixture.VALID_ROSTER("AwayTeam1");
+        TeamRoaster away2 = TeamRoasterFixture.VALID_ROSTER("AwayTeam2");
+
+        List<Integer> score1 = List.of(10, 8);
+        List<Integer> score2 = List.of(5, 6);
+
+        playResultService.saveResult(home, away1, score1);
+        playResultService.saveResult(home, away2, score2);
+
+        // when
+        List<PlayResult> results = playResultService.readByTeam(home);
+
+        // then
+        assertAll(
+                () -> assertThat(results).hasSize(2),
+                () -> assertThat(results)
+                        .extracting("awayTeamName")
+                        .containsExactlyInAnyOrder("AwayTeam1", "AwayTeam2")
+        );
+    }
+
 }
