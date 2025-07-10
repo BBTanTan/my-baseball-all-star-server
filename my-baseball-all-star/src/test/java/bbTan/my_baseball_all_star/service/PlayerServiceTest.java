@@ -71,7 +71,7 @@ class PlayerServiceTest extends IntegrationTestSupport {
                     Set<Position> positions = selectedPlayers.stream()
                             .map(Player::getPosition)
                             .collect(Collectors.toSet());
-                    assertEquals(positions.size(), 10, "포지션이 중복되지 않아야 한다.");
+                    assertEquals(10, positions.size(), "포지션이 중복되지 않아야 한다.");
                 }
         );
     }

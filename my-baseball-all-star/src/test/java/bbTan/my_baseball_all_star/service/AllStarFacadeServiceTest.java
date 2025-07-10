@@ -5,10 +5,7 @@ import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.*;
 import bbTan.my_baseball_all_star.domain.PlayShare;
 import bbTan.my_baseball_all_star.domain.Team;
 import bbTan.my_baseball_all_star.fixture.TeamFixture;
@@ -20,6 +17,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -145,5 +144,28 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
                 () -> assertNotNull(response, "응답 객체는 null이면 안 됩니다."),
                 () -> assertEquals(12, response.players().size(), "선수는 12명이어야 합니다.")
         );
+    }
+
+    @Test
+    @DisplayName("포지션 별로 선수 정보 반환 성공")
+    void getAllPlayersByPosition() {
+        // when
+        List<PlayerResponse.PositionGroup> grouped = facadeService.findAllPlayers();
+
+        // then
+        //포지션 개수
+
+        Map<String, List<PlayerResponse>> map = grouped.stream()
+                .collect(Collectors.toMap(PlayerResponse.PositionGroup::position, PlayerResponse.PositionGroup::players));
+
+        assertAll(
+                () -> assertEquals(10, grouped.size()),
+                () -> assertThat(map.get("선발 투수").size()).isGreaterThan(1),
+                () -> assertThat(map.get("외야수").size()).isGreaterThan(3)
+        );
+
+
+
+
     }
 }

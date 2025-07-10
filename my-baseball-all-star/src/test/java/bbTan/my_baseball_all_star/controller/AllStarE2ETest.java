@@ -4,11 +4,11 @@ import bbTan.my_baseball_all_star.AcceptanceTest;
 import bbTan.my_baseball_all_star.fixture.AllStarRequestFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 class AllStarE2ETest extends AcceptanceTest {
 
@@ -205,6 +205,23 @@ class AllStarE2ETest extends AcceptanceTest {
                 .get("/teams")
                 .then().log().all()
                 .statusCode(400);
+    }
+
+    @DisplayName("선수 전체 목록 반환 성공")
+    @Test
+    void getAllPlayersByPosition() {
+        ValidatableResponse response = RestAssured
+                .given().log().all()
+                .when()
+                .get("/players")
+                .then().log().all()
+                .statusCode(200);
+
+        response
+                .body("size()", equalTo(10));
+
+        response
+                .body("[0].players.size()", greaterThanOrEqualTo(1));
     }
 
 }
