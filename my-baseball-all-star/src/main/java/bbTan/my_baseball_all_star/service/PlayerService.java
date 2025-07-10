@@ -30,7 +30,6 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
-    //각 포지션마다 선수 랜덤 추출
     @Transactional
     public List<Player> randomPlayerSelection() {
         Map<Position, List<Player>> groupedPlayersByPosition = playerRepository.findAll().stream()
@@ -60,11 +59,11 @@ public class PlayerService {
 
         if (position == Position.OUT_FIELD) {
             team.addAll(pickRandom(candidates, OUTFIELDER_SELECT_COUNT));
-        } else {
-
-            Player player = pickRandom(candidates, PLAYER_SELECT_COUNT).get(0);
-            team.add(player);
+            return;
         }
+
+        Player player = pickRandom(candidates, PLAYER_SELECT_COUNT).get(0);
+        team.add(player);
     }
 
     private List<Player> pickRandom(List<Player> source, int count) {

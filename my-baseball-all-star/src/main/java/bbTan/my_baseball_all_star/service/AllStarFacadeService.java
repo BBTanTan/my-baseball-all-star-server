@@ -4,7 +4,7 @@ import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.*;
-import bbTan.my_baseball_all_star.domain.Mode;
+import bbTan.my_baseball_all_star.domain.SelectMode;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Team;
 import bbTan.my_baseball_all_star.domain.TeamRoaster;
@@ -57,7 +57,7 @@ public class AllStarFacadeService {
 
     @Transactional
     public RandomTeamPlayerResponse makeRandomTeamRoaster(String mode) {
-        if (!Mode.isValidPosition(mode)) {
+        if (!SelectMode.isValidSelectMode(mode)) {
             throw new AllStarException(ExceptionCode.INVALID_REQUEST_PATH);
         }
 

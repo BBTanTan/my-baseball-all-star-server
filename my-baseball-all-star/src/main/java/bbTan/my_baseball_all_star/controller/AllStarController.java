@@ -44,7 +44,7 @@ public class AllStarController {
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<RandomTeamPlayerResponse> getRandomTeams(@RequestParam(value = "mode", required = false) String mode) {
+    public ResponseEntity<RandomTeamPlayerResponse> getRandomTeams(@RequestParam(value = "mode") String mode) {
         return ResponseEntity.ok(allStarService.makeRandomTeamRoaster(mode));
     }
 
