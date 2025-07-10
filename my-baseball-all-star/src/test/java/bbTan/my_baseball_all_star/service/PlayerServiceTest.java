@@ -49,7 +49,7 @@ class PlayerServiceTest extends IntegrationTestSupport {
     @Test
     void findAllPlayers() {
         // when
-        List<PlayerResponse> players = playerService.readAllPlayers();
+        List<Player> players = playerService.readAllPlayers();
 
         // then
         assertAll(

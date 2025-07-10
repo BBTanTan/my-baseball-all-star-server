@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -79,9 +80,12 @@ public class AllStarFacadeService {
     }
 
     @Transactional
-    public List<PlayerResponse> findAllPlayers() {
+    public List<PlayerResponse.PositionGroup> findAllPlayers() {
         return playerService.readAllPlayers().stream()
                 .map(PlayerResponse::fromEntity)
+                .collect(Collectors.groupingBy(PlayerResponse::position))
+                .entrySet().stream()
+                .map(entry -> new PlayerResponse.PositionGroup(entry.getKey(), entry.getValue()))
                 .toList();
     }
 

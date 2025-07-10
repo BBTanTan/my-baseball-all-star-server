@@ -35,7 +35,7 @@ public class AllStarController {
     }
 
     @GetMapping("/players")
-    public ResponseEntity<List<PlayerResponse>> getAllPlayers() {
+    public ResponseEntity<List<PlayerResponse.PositionGroup>> getAllPlayers() {
         return ResponseEntity.ok(allStarService.findAllPlayers());
     }
 
