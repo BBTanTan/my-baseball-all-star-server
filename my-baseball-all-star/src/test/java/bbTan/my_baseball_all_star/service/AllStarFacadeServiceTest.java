@@ -4,13 +4,16 @@ import bbTan.my_baseball_all_star.IntegrationTestSupport;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
+import bbTan.my_baseball_all_star.controller.dto.request.TeamPlayResultRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayResultResponse;
 import bbTan.my_baseball_all_star.domain.PlayShare;
 import bbTan.my_baseball_all_star.domain.Team;
 import bbTan.my_baseball_all_star.fixture.TeamFixture;
+import bbTan.my_baseball_all_star.fixture.TeamRoasterFixture;
 import bbTan.my_baseball_all_star.repository.PlayShareRepository;
 import bbTan.my_baseball_all_star.repository.PlayerChoiceCountRepository;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
@@ -130,5 +133,27 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
                 () -> assertThat(response.teamName()).isEqualTo(team.getName())
         );
     }
+
+    @DisplayName("팀 경기 결과 조회 성공")
+    @Test
+    void readTeamPlayResults() {
+        // given
+        String password = "pw1234";
+        TeamPlayResultRequest request = new TeamPlayResultRequest(password);
+
+        // when
+        TeamPlayResultResponse response = facadeService.readTeamPlayResults(1L, request);
+
+        // then
+        assertAll(
+                () -> assertThat(response).isNotNull(),
+                () -> assertThat(response.teamName()).isEqualTo("TestTeam"),
+                () -> assertThat(response.playResults()).hasSize(2),
+                () -> assertThat(response.playResults())
+                        .extracting("awayTeamName")
+                        .containsExactlyInAnyOrder("Away1", "Away2")
+        );
+    }
+
 
 }
