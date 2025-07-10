@@ -80,7 +80,9 @@ public class AllStarFacadeService {
 
     @Transactional
     public List<PlayerResponse> findAllPlayers() {
-        return playerService.readAllPlayers(); // TODO: DTO를 파사드 서비스가 만들도록 수정
+        return playerService.readAllPlayers().stream()
+                .map(PlayerResponse::fromEntity)
+                .toList();
     }
 
     private TeamRoaster makeTeamRoaster(Team team) {

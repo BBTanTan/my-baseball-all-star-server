@@ -28,10 +28,8 @@ public class PlayerService {
     }
 
     @Transactional(readOnly = true)
-    public List<PlayerResponse> readAllPlayers() {
-        return playerRepository.findAll().stream()
-                .map(PlayerResponse::fromEntity)
-                .toList();
+    public List<Player> readAllPlayers() {
+        return playerRepository.findAll();
     }
 
     //각 포지션마다 선수 랜덤 추출
