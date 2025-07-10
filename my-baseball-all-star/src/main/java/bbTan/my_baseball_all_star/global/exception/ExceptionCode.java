@@ -34,6 +34,8 @@ public enum ExceptionCode {
     // PlayShare
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호는 4자 이상 10자 이하여야 합니다."),
     TEAM_URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "URL에 해당하는 팀을 찾을 수 없습니다."),
+    TEAM_SHARE_NOT_FOUND(HttpStatus.BAD_REQUEST, "팀에 해당하는 공유 현황을 찾을 수 없습니다."),
+    INVALID_PLAY_SHARE_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     ;
 
     private final HttpStatus httpStatus;
