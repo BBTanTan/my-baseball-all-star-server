@@ -5,9 +5,7 @@ import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.*;
 import bbTan.my_baseball_all_star.domain.PlayShare;
 import bbTan.my_baseball_all_star.domain.Team;
 import bbTan.my_baseball_all_star.fixture.TeamFixture;
@@ -19,9 +17,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AllStarFacadeServiceTest extends IntegrationTestSupport {
 
@@ -131,4 +133,33 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
         );
     }
 
+    @Test
+    @DisplayName("랜덤 팀 생성 성공")
+    void makeRandomTeamRoaster() {
+        // when
+        RandomTeamPlayerResponse response = facadeService.makeRandomTeamRoaster("random");
+
+        // then
+        assertAll(
+                () -> assertNotNull(response),
+                () -> assertEquals(12,response.playerResponses().size())
+        );
+    }
+
+    @Test
+    @DisplayName("포지션 별로 선수 정보 반환 성공")
+    void getAllPlayersByPosition() {
+        // when
+        List<PositionGroupResponse> grouped = facadeService.findAllPlayers();
+
+        // then
+        Map<String, List<PlayerResponse>> map = grouped.stream()
+                .collect(Collectors.toMap(PositionGroupResponse::position, PositionGroupResponse::players));
+
+        assertAll(
+                () -> assertEquals(10, grouped.size()),
+                () -> assertThat(map.get("선발 투수").size()).isGreaterThanOrEqualTo(1),
+                () -> assertThat(map.get("외야수").size()).isGreaterThanOrEqualTo(3)
+        );
+    }
 }

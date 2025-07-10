@@ -3,10 +3,7 @@ package bbTan.my_baseball_all_star.controller;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.*;
 import bbTan.my_baseball_all_star.service.AllStarFacadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public class AllStarController {
     }
 
     @GetMapping("/players")
-    public ResponseEntity<List<PlayerResponse>> getAllPlayers() {
+    public ResponseEntity<List<PositionGroupResponse>> getAllPlayers() {
         return ResponseEntity.ok(allStarService.findAllPlayers());
     }
 
@@ -43,6 +41,11 @@ public class AllStarController {
     @PostMapping("/teams")
     public ResponseEntity<FriendPlayCreateResponse> createFriendPlay(@Valid @RequestBody FriendPlayCreateRequest request) {
         return ResponseEntity.ok(allStarService.createFriendPlay(request));
+    }
+
+    @GetMapping("/teams")
+    public ResponseEntity<RandomTeamPlayerResponse> getRandomTeams(@RequestParam(value = "mode") String mode) {
+        return ResponseEntity.ok(allStarService.makeRandomTeamRoaster(mode));
     }
 
     @GetMapping("/teams/{team-uuid}")

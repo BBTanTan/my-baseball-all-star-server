@@ -3,15 +3,13 @@ package bbTan.my_baseball_all_star.service;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
-import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.*;
+import bbTan.my_baseball_all_star.domain.SelectMode;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Team;
-import bbTan.my_baseball_all_star.domain.TeamPlayer;
 import bbTan.my_baseball_all_star.domain.TeamRoaster;
+import bbTan.my_baseball_all_star.global.exception.AllStarException;
+import bbTan.my_baseball_all_star.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +55,22 @@ public class AllStarFacadeService {
         return new FriendPlayCreateResponse(teamUuid);
     }
 
+    @Transactional
+    public RandomTeamPlayerResponse makeRandomTeamRoaster(String mode) {
+        if (!SelectMode.isValidSelectMode(mode)) {
+            throw new AllStarException(ExceptionCode.INVALID_REQUEST_PATH);
+        }
+
+        List<Player> selectedPlayers = playerService.randomPlayerSelection();
+        List<Long> playerIds = selectedPlayers.stream().map(Player::getId).toList();
+
+
+        List<Long> selectedPlayerChoiceCount = playerChoiceCountService.readChoiceCounts(playerIds);
+
+        String RANDOM_TEAM_NAME = "RANDOM TEAM";
+        return RandomTeamPlayerResponse.fromEntity(new TeamRoaster(RANDOM_TEAM_NAME, selectedPlayers, selectedPlayerChoiceCount));
+    }
+
     private boolean isWin(List<Integer> playResult) {
         int homeScore = playResult.get(0);
         int awayScore = playResult.get(1);
@@ -71,8 +85,13 @@ public class AllStarFacadeService {
     }
 
     @Transactional
-    public List<PlayerResponse> findAllPlayers() {
-        return playerService.readAllPlayers(); // TODO: DTO를 파사드 서비스가 만들도록 수정
+    public List<PositionGroupResponse> findAllPlayers() {
+        return playerService.readAllPlayers().stream()
+                .map(PlayerResponse::fromEntity)
+                .collect(Collectors.groupingBy(PlayerResponse::position))
+                .entrySet().stream()
+                .map(entry -> new PositionGroupResponse(entry.getKey(), entry.getValue()))
+                .toList();
     }
 
     private TeamRoaster makeTeamRoaster(Team team) {
