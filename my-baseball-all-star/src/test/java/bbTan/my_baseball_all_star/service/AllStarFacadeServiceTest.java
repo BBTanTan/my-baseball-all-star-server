@@ -22,9 +22,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AllStarFacadeServiceTest extends IntegrationTestSupport {
 
@@ -155,5 +159,33 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
         );
     }
 
+    @Test
+    @DisplayName("랜덤 팀 생성 성공")
+    void makeRandomTeamRoaster() {
+        // when
+        RandomTeamPlayerResponse response = facadeService.makeRandomTeamRoaster("random");
 
+        // then
+        assertAll(
+                () -> assertNotNull(response),
+                () -> assertEquals(12,response.playerResponses().size())
+        );
+    }
+
+    @Test
+    @DisplayName("포지션 별로 선수 정보 반환 성공")
+    void getAllPlayersByPosition() {
+        // when
+        List<PositionGroupResponse> grouped = facadeService.findAllPlayers();
+
+        // then
+        Map<String, List<PlayerResponse>> map = grouped.stream()
+                .collect(Collectors.toMap(PositionGroupResponse::position, PositionGroupResponse::players));
+
+        assertAll(
+                () -> assertEquals(10, grouped.size()),
+                () -> assertThat(map.get("선발 투수").size()).isGreaterThanOrEqualTo(1),
+                () -> assertThat(map.get("외야수").size()).isGreaterThanOrEqualTo(3)
+        );
+    }
 }

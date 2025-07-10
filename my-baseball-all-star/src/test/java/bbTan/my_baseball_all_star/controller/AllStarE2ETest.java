@@ -5,10 +5,11 @@ import bbTan.my_baseball_all_star.controller.dto.request.TeamPlayResultRequest;
 import bbTan.my_baseball_all_star.fixture.AllStarRequestFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 class AllStarE2ETest extends AcceptanceTest {
 
@@ -191,5 +192,60 @@ class AllStarE2ETest extends AcceptanceTest {
                 .when().post("/teams/1")
                 .then().log().all()
                 .statusCode(400);
+    }
+
+    @DisplayName("랜덤 팀 생성 성공")
+    @Test
+    void getRandomTeams() {
+        RestAssured
+                .given().log().all()
+                .queryParam("mode", "random")
+                .when()
+                .get("/teams")
+                .then().log().all()
+                .statusCode(200)
+                .body("playerResponses.size()", equalTo(12))
+                .extract()
+                .jsonPath();
+    }
+
+    @DisplayName("랜덤 팀 생성 실패 : 잘못된 mode 값")
+    @Test
+    void getRandomTeams_wrong_mode_exception() {
+        RestAssured
+                .given().log().all()
+                .queryParam("mode", "wrong")
+                .when()
+                .get("/teams")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @DisplayName("랜덤 팀 생성 실패 : 파라미터 누락")
+    @Test
+    void getRandomTeams_missing_parameter_exception() {
+        RestAssured
+                .given().log().all()
+                .when()
+                .get("/teams")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @DisplayName("선수 전체 목록 반환 성공")
+    @Test
+    void getAllPlayersByPosition() {
+        ValidatableResponse response = RestAssured
+                .given().log().all()
+                .when()
+                .get("/players")
+                .then().log().all()
+                .statusCode(200);
+
+        response
+                .body("size()", equalTo(10));
+
+        response
+                .body("[0].players.size()", greaterThanOrEqualTo(1));
     }
 }
