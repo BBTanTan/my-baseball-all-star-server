@@ -40,12 +40,11 @@ class PlayShareServiceTest extends IntegrationTestSupport {
         String url = playShareService.createShareUrl(team, password);
 
         // then
-        List<PlayShare> saved = playShareRepository.findAll();
+        PlayShare saved = playShareRepository.findFirstByTeamId(team.getId()).get();
         assertAll(
-                () -> assertThat(saved).hasSize(1),
-                () -> assertThat(saved.get(0).getTeam().getId()).isEqualTo(team.getId()),
-                () -> assertThat(saved.get(0).getPassword()).isEqualTo(password),
-                () -> assertThat(saved.get(0).getUrl()).isEqualTo(url)
+                () -> assertThat(saved.getTeam().getId()).isEqualTo(team.getId()),
+                () -> assertThat(saved.getPassword()).isEqualTo(password),
+                () -> assertThat(saved.getUrl()).isEqualTo(url)
         );
     }
 

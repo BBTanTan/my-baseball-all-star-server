@@ -44,7 +44,7 @@ class PlayResultServiceTest extends IntegrationTestSupport {
         playResultService.saveResult(home, away, scores);
 
         // then
-        List<PlayResult> results = playResultRepository.findAll();
+        List<PlayResult> results = playResultRepository.findByTeamId(home.getId());
         PlayResult saved = results.get(0);
         assertAll(
                 () -> assertThat(saved.getAwayTeamName()).isEqualTo(away.getName()),
