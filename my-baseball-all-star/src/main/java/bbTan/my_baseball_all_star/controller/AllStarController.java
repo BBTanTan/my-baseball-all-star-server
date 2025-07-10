@@ -8,6 +8,8 @@ import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateRespon
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PositionGroupResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.RandomTeamPlayerResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayResultResponse;
 import bbTan.my_baseball_all_star.service.AllStarFacadeService;
 import jakarta.validation.Valid;
