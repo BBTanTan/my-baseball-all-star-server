@@ -54,7 +54,7 @@ jobs:
     runs-on: my-baseball-all-star-server
     steps:
       - name: Change permission
-        run: sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2024-my-baseball-all-star
+        run: sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/my-baseball-all-star-server
 
       - name: Download build artifact
         uses: actions/download-artifact@v4
