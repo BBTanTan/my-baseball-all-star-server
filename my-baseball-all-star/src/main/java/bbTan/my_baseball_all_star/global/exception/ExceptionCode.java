@@ -37,7 +37,7 @@ public enum ExceptionCode {
     TEAM_URL_NOT_FOUND(HttpStatus.BAD_REQUEST, "URL에 해당하는 팀을 찾을 수 없습니다."),
 
     //Player
-    NO_PLAYER(HttpStatus.NO_CONTENT, "선수 정보가 존재하지 않습니다."),
+    NO_PLAYER(HttpStatus.BAD_REQUEST, "선수 정보가 존재하지 않습니다."),
     INSUFFICIENT_CANDIDATES(HttpStatus.UNPROCESSABLE_ENTITY, "후보 선수가 부족합니다.");
     ;
 

@@ -1,9 +1,7 @@
 package bbTan.my_baseball_all_star.service;
 
-import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Position;
-import bbTan.my_baseball_all_star.domain.TeamRoaster;
 import bbTan.my_baseball_all_star.global.exception.AllStarException;
 import bbTan.my_baseball_all_star.global.exception.ExceptionCode;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
@@ -33,6 +31,7 @@ public class PlayerService {
     }
 
     //각 포지션마다 선수 랜덤 추출
+    @Transactional
     public List<Player> randomPlayerSelection() {
         Map<Position, List<Player>> groupedPlayersByPosition = playerRepository.findAll().stream()
                 .collect(Collectors.groupingBy(Player::getPosition));
@@ -45,19 +44,27 @@ public class PlayerService {
 
         for (Position position : Position.values()) {
             List<Player> candidates = playerPositionMap.get(position);
-            if (candidates == null || candidates.isEmpty()) {
-                throw new IllegalArgumentException("No candidates for position: " + position);
-            }
-
-            if (position == Position.OUT_FIELD) {
-                team.addAll(pickRandom(candidates, 3)); // 외야수 3명 추출
-            } else {
-                Player player = pickRandom(candidates, 1).get(0); // 1명 추출
-                team.add(player);
-            }
+            randomSelect(position, candidates, team);
         }
 
         return team;
+    }
+
+    private void randomSelect(Position position, List<Player> candidates, List<Player> team) {
+        int PLAYER_SELECT_COUNT = 1;
+        int OUTFIELDER_SELECT_COUNT = 3;
+
+        if (candidates == null || candidates.isEmpty()) {
+            throw new AllStarException(ExceptionCode.NO_PLAYER);
+        }
+
+        if (position == Position.OUT_FIELD) {
+            team.addAll(pickRandom(candidates, OUTFIELDER_SELECT_COUNT));
+        } else {
+
+            Player player = pickRandom(candidates, PLAYER_SELECT_COUNT).get(0);
+            team.add(player);
+        }
     }
 
     private List<Player> pickRandom(List<Player> source, int count) {

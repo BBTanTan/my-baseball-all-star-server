@@ -179,7 +179,7 @@ class AllStarE2ETest extends AcceptanceTest {
                 .get("/teams")
                 .then().log().all()
                 .statusCode(200)
-                .body("players.size()", equalTo(12))
+                .body("playerResponses.size()", equalTo(12))
                 .extract()
                 .jsonPath();
     }

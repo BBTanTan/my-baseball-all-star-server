@@ -3,14 +3,13 @@ package bbTan.my_baseball_all_star.service;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.*;
+import bbTan.my_baseball_all_star.domain.Mode;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Team;
 import bbTan.my_baseball_all_star.domain.TeamRoaster;
+import bbTan.my_baseball_all_star.global.exception.AllStarException;
+import bbTan.my_baseball_all_star.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,14 +55,20 @@ public class AllStarFacadeService {
         return new FriendPlayCreateResponse(teamUuid);
     }
 
-    public TeamPlayerResponse makeRandomTeamRoaster() {
+    @Transactional
+    public RandomTeamPlayerResponse makeRandomTeamRoaster(String mode) {
+        if (!Mode.isValidPosition(mode)) {
+            throw new AllStarException(ExceptionCode.INVALID_REQUEST_PATH);
+        }
+
         List<Player> selectedPlayers = playerService.randomPlayerSelection();
         List<Long> playerIds = selectedPlayers.stream().map(Player::getId).toList();
 
 
         List<Long> selectedPlayerChoiceCount = playerChoiceCountService.readChoiceCounts(playerIds);
 
-        return TeamPlayerResponse.fromEntity(new TeamRoaster("RANDOM TEAM", selectedPlayers, selectedPlayerChoiceCount));
+        String RANDOM_TEAM_NAME = "RANDOM TEAM";
+        return RandomTeamPlayerResponse.fromEntity(new TeamRoaster(RANDOM_TEAM_NAME, selectedPlayers, selectedPlayerChoiceCount));
     }
 
     private boolean isWin(List<Integer> playResult) {
@@ -80,12 +85,12 @@ public class AllStarFacadeService {
     }
 
     @Transactional
-    public List<PlayerResponse.PositionGroup> findAllPlayers() {
+    public List<PositionGroupResponse> findAllPlayers() {
         return playerService.readAllPlayers().stream()
                 .map(PlayerResponse::fromEntity)
                 .collect(Collectors.groupingBy(PlayerResponse::position))
                 .entrySet().stream()
-                .map(entry -> new PlayerResponse.PositionGroup(entry.getKey(), entry.getValue()))
+                .map(entry -> new PositionGroupResponse(entry.getKey(), entry.getValue()))
                 .toList();
     }
 

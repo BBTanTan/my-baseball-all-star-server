@@ -3,13 +3,7 @@ package bbTan.my_baseball_all_star.controller;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayerResponse;
-import bbTan.my_baseball_all_star.global.exception.AllStarException;
-import bbTan.my_baseball_all_star.global.exception.ExceptionCode;
+import bbTan.my_baseball_all_star.controller.dto.response.*;
 import bbTan.my_baseball_all_star.service.AllStarFacadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +29,7 @@ public class AllStarController {
     }
 
     @GetMapping("/players")
-    public ResponseEntity<List<PlayerResponse.PositionGroup>> getAllPlayers() {
+    public ResponseEntity<List<PositionGroupResponse>> getAllPlayers() {
         return ResponseEntity.ok(allStarService.findAllPlayers());
     }
 
@@ -50,12 +44,8 @@ public class AllStarController {
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<TeamPlayerResponse> getRandomTeams(@RequestParam(value = "mode", required = false) String mode) {
-        if ("random".equalsIgnoreCase(mode)) {
-            return ResponseEntity.ok(allStarService.makeRandomTeamRoaster());
-        } else {
-            throw new AllStarException(ExceptionCode.INVALID_REQUEST_PATH);
-        }
+    public ResponseEntity<RandomTeamPlayerResponse> getRandomTeams(@RequestParam(value = "mode", required = false) String mode) {
+        return ResponseEntity.ok(allStarService.makeRandomTeamRoaster(mode));
     }
 
     @GetMapping("/teams/{team-uuid}")

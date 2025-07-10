@@ -137,12 +137,12 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
     @DisplayName("랜덤 팀 생성 성공")
     void makeRandomTeamRoaster() {
         // when
-        TeamPlayerResponse response = facadeService.makeRandomTeamRoaster();
+        RandomTeamPlayerResponse response = facadeService.makeRandomTeamRoaster("random");
 
         // then
         assertAll(
-                () -> assertNotNull(response, "응답 객체는 null이면 안 됩니다."),
-                () -> assertEquals(12, response.players().size(), "선수는 12명이어야 합니다.")
+                () -> assertNotNull(response),
+                () -> assertEquals(12,response.playerResponses().size())
         );
     }
 
@@ -150,22 +150,16 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
     @DisplayName("포지션 별로 선수 정보 반환 성공")
     void getAllPlayersByPosition() {
         // when
-        List<PlayerResponse.PositionGroup> grouped = facadeService.findAllPlayers();
+        List<PositionGroupResponse> grouped = facadeService.findAllPlayers();
 
         // then
-        //포지션 개수
-
         Map<String, List<PlayerResponse>> map = grouped.stream()
-                .collect(Collectors.toMap(PlayerResponse.PositionGroup::position, PlayerResponse.PositionGroup::players));
+                .collect(Collectors.toMap(PositionGroupResponse::position, PositionGroupResponse::players));
 
         assertAll(
                 () -> assertEquals(10, grouped.size()),
                 () -> assertThat(map.get("선발 투수").size()).isGreaterThanOrEqualTo(1),
                 () -> assertThat(map.get("외야수").size()).isGreaterThanOrEqualTo(3)
         );
-
-
-
-
     }
 }
