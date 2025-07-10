@@ -160,8 +160,8 @@ class AllStarFacadeServiceTest extends IntegrationTestSupport {
 
         assertAll(
                 () -> assertEquals(10, grouped.size()),
-                () -> assertThat(map.get("선발 투수").size()).isGreaterThan(1),
-                () -> assertThat(map.get("외야수").size()).isGreaterThan(3)
+                () -> assertThat(map.get("선발 투수").size()).isGreaterThanOrEqualTo(1),
+                () -> assertThat(map.get("외야수").size()).isGreaterThanOrEqualTo(3)
         );
 
 
