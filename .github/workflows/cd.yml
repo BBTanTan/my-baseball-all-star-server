@@ -47,7 +47,7 @@ jobs:
         with:
           working-directory: my-baseball-all-star
           name: my-baseball-all-star-jar
-          path: ./build/libs/*.jar
+          path: ./**/*.jar
 
   deploy:
     needs: build
