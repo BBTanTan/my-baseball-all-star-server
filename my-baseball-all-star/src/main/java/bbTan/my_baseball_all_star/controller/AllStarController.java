@@ -3,7 +3,14 @@ package bbTan.my_baseball_all_star.controller;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.*;
+import bbTan.my_baseball_all_star.controller.dto.request.TeamPlayResultRequest;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PositionGroupResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.RandomTeamPlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayResultResponse;
 import bbTan.my_baseball_all_star.service.AllStarFacadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,5 +58,11 @@ public class AllStarController {
     @GetMapping("/teams/{team-uuid}")
     public ResponseEntity<FriendPlayTeamResponse> readFriendPlayTeam(@PathVariable("team-uuid") String teamUrl) {
         return ResponseEntity.ok(allStarService.readFriendPlayTeam(teamUrl));
+    }
+
+    @PostMapping("/teams/{team-id}")
+    public ResponseEntity<TeamPlayResultResponse> readTeamPlayResults(@PathVariable("team-id") Long teamId,
+                                                                      @Valid @RequestBody TeamPlayResultRequest request) {
+        return ResponseEntity.ok(allStarService.readTeamPlayResults(teamId, request));
     }
 }

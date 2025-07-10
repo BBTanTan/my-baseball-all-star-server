@@ -1,6 +1,7 @@
 package bbTan.my_baseball_all_star.controller;
 
 import bbTan.my_baseball_all_star.AcceptanceTest;
+import bbTan.my_baseball_all_star.controller.dto.request.TeamPlayResultRequest;
 import bbTan.my_baseball_all_star.fixture.AllStarRequestFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -169,6 +170,30 @@ class AllStarE2ETest extends AcceptanceTest {
                 .body("teamName", notNullValue());
     }
 
+    @DisplayName("팀 경기 결과 조회 성공")
+    @Test
+    void readTeamPlayResults() {
+        TeamPlayResultRequest request = new TeamPlayResultRequest("pw1234");
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/teams/1")
+                .then().log().all()
+                .statusCode(200);
+    }
+
+    @DisplayName("팀 경기 결과 조회 실패 : 비밀번호가 없을 경우")
+    @Test
+    void readTeamPlayResults_nullPassword_exception() {
+        TeamPlayResultRequest request = new TeamPlayResultRequest(null);
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/teams/1")
+                .then().log().all()
+                .statusCode(400);
+    }
+
     @DisplayName("랜덤 팀 생성 성공")
     @Test
     void getRandomTeams() {
@@ -223,5 +248,4 @@ class AllStarE2ETest extends AcceptanceTest {
         response
                 .body("[0].players.size()", greaterThanOrEqualTo(1));
     }
-
 }

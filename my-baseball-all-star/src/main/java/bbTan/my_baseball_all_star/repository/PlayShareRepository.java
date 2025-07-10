@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface PlayShareRepository extends JpaRepository<PlayShare, Long> {
 
     Optional<PlayShare> findByUrl(String url);
+
+    Optional<PlayShare> findFirstByTeamId(Long teamId);
 }

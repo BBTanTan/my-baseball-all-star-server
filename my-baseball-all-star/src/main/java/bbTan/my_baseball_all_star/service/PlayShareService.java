@@ -30,4 +30,21 @@ public class PlayShareService {
         }
         return playShare.get().getTeam();
     }
+
+    @Transactional(readOnly = true)
+    public Team readTeamByOwner(Long teamId, String password) {
+        Optional<PlayShare> playShare = playShareRepository.findFirstByTeamId(teamId);
+        if (playShare.isEmpty()) {
+            throw new AllStarException(ExceptionCode.TEAM_SHARE_NOT_FOUND);
+        }
+        PlayShare share = playShare.get();
+        validatePlaySharePassword(password, share);
+        return share.getTeam();
+    }
+
+    private void validatePlaySharePassword(String password, PlayShare playShare) {
+        if (!password.equals(playShare.getPassword())) {
+            throw new AllStarException(ExceptionCode.INVALID_PLAY_SHARE_PASSWORD);
+        }
+    }
 }

@@ -55,4 +55,9 @@ VALUES (1, 1),
        (1, 11),
        (1, 12);
 
+INSERT INTO play_share (team_id, url, password)
+VALUES (1, 'test-url', 'pw1234');
 
+INSERT INTO play_result (team_id, away_team_name, home_team_score, away_team_score, created_at)
+VALUES (1, 'Away1', 7, 6, NOW()),
+       (1, 'Away2', 5, 8, NOW());

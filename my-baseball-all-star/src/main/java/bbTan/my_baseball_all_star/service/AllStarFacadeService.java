@@ -3,7 +3,16 @@ package bbTan.my_baseball_all_star.service;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
-import bbTan.my_baseball_all_star.controller.dto.response.*;
+import bbTan.my_baseball_all_star.controller.dto.request.TeamPlayResultRequest;
+import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.PositionGroupResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.RandomTeamPlayerResponse;
+import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayResultResponse;
+import bbTan.my_baseball_all_star.domain.PlayResult;
 import bbTan.my_baseball_all_star.domain.SelectMode;
 import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Team;
@@ -112,5 +121,12 @@ public class AllStarFacadeService {
     public FriendPlayTeamResponse readFriendPlayTeam(String teamUrl) {
         Team team = playShareService.readTeamByUrl(teamUrl);
         return new FriendPlayTeamResponse(team.getId(), team.getName());
+    }
+
+    @Transactional(readOnly = true)
+    public TeamPlayResultResponse readTeamPlayResults(Long teamId, TeamPlayResultRequest request) {
+        Team team = playShareService.readTeamByOwner(teamId, request.password());
+        List<PlayResult> playResults = playResultService.readByTeam(team);
+        return TeamPlayResultResponse.of(team, playResults);
     }
 }
