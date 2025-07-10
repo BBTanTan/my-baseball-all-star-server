@@ -11,10 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.8
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x my-baseball-all-star/gradlew
 
       - name: Write application.yml
         env:
@@ -24,35 +38,32 @@ jobs:
           echo "${APPLICATION_YML}" > my-baseball-all-star/src/main/resources/application.yml
           echo "${APPLICATION_TEST_YML}" > my-baseball-all-star/src/test/resources/application-test.yml
 
-      - name: Upload source to artifact
+      - name: Build with Gradle
+        run: ./gradlew clean build
+        working-directory: my-baseball-all-star
+
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: source-code
-          path: my-baseball-all-star
+          working-directory: my-baseball-all-star
+          name: my-baseball-all-star-jar
+          path: ./build/libs/*.jar
 
   deploy:
     needs: build
-    runs-on: my-baseball-all-star-server  
+    runs-on: my-baseball-all-star-server
     steps:
-      - name: Download source code
+      - name: Change permission
+        run: sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2024-my-baseball-all-star
+
+      - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: source-code
-          path: ./my-baseball-all-star
+          name: my-baseball-all-star-jar
 
-      - name: Give execute permission for gradlew
-        run: chmod +x ./my-baseball-all-star/gradlew
+      - name: Kill running server if exists
+        run: sudo fuser -k -n tcp 8080 || true
 
-      - name: Build Docker image
+      - name: Start server
         run: |
-          cd my-baseball-all-star
-          docker build --platform linux/amd64 -t my-baseball-all-star-app .
-
-      - name: Stop and remove existing container if running
-        run: |
-          docker stop my-baseball-all-star-app || true
-          docker rm my-baseball-all-star-app || true
-
-      - name: Run Docker container
-        run: |
-          docker run -d --name my-baseball-all-star-app -p 8080:8080 my-baseball-all-star-app
+          sudo nohup java -jar -Duser.timezone=Asia/Seoul ./my-baseball-all-star/build/libs/*.jar &
