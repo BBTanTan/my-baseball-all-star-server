@@ -66,4 +66,4 @@ jobs:
 
       - name: Start server
         run: |
-          sudo nohup java -jar -Duser.timezone=Asia/Seoul ./my-baseball-all-star/build/libs/*.jar &
+          sudo nohup java -jar -Duser.timezone=Asia/Seoul ./my-baseball-all-star/build/libs/*.jar > /home/ubuntu/actions-runner/server.log 2>&1 &
