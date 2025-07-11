@@ -7,6 +7,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -24,6 +25,12 @@ public class PlayerScoreCrawlerService {
 
     private final PlayerRepository playerRepository;
 
+    @PostConstruct
+    public void init() {
+        crawlPitcher();
+        crawlCatcher();
+    }
+
     @Scheduled(cron = "0 0 3 * * ?") // 매일 오전 3시에 크롤링 작업 수행
     public void crawlPitcher() {
         WebDriverManager.chromedriver().setup();
@@ -32,7 +39,7 @@ public class PlayerScoreCrawlerService {
         //투수목록
         List<Player> pitchers = playerRepository.findAll().stream()
                 .filter(player -> player.getPosition().getName().contains("PITCHER"))
-                .collect(Collectors.toList());
+                .toList();
 
         try {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
