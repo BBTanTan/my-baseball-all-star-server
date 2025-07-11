@@ -13,3 +13,6 @@ src/test/resources/*.yml
 # Docker 빌드 제외
 docker-compose.override.yml
 *.tar
+
+# log
+/logs
