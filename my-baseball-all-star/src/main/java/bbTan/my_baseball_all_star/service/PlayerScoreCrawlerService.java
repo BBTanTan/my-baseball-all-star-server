@@ -102,7 +102,7 @@ public class PlayerScoreCrawlerService {
             }
 
         } finally {
-            driver.quit(); // 리소스 정리
+            driver.quit();
         }
     }
 
@@ -116,6 +116,7 @@ public class PlayerScoreCrawlerService {
                 .toList();
 
         try {
+
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
 
             for (Player player : players) {
