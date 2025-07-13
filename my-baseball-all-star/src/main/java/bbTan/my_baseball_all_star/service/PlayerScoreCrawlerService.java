@@ -4,8 +4,10 @@ import bbTan.my_baseball_all_star.domain.Player;
 import bbTan.my_baseball_all_star.domain.Position;
 import bbTan.my_baseball_all_star.repository.PlayerRepository;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -32,8 +35,7 @@ public class PlayerScoreCrawlerService {
     }
 
     private void crawlPitcher() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = createChromeDriver();
 
         //투수목록
         List<Player> pitchers = playerRepository.findAll().stream()
@@ -99,8 +101,7 @@ public class PlayerScoreCrawlerService {
 
     //야수 점수 크롤링 작업
     private void crawlCatcher() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = createChromeDriver();
         //투수 제외 모두 선택
         List<Player> players = playerRepository.findAll().stream()
                 .filter(player -> !player.getPosition().getName().contains("PITCHER"))
@@ -257,5 +258,21 @@ public class PlayerScoreCrawlerService {
                 + smartPlay * 0.10;
 
         return Math.round(total * 100.0) / 100.0;
+    }
+
+    public WebDriver createChromeDriver() {
+        WebDriverManager.chromedriver().setup();
+
+        String userDataDir = "/tmp/chrome-profile-" + UUID.randomUUID();
+        new File(userDataDir).mkdirs();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--user-data-dir=" + userDataDir);
+
+        return new ChromeDriver(options);
     }
 }
