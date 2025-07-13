@@ -83,7 +83,7 @@ public class Player {
                 ", position=" + position +
                 ", dateOfBirth=" + dateOfBirth +
                 ", score=" + score +
-                ", profileURL" + profileUrl +
+                ", profileURL=" + profileUrl +
                 '}';
     }
 }
