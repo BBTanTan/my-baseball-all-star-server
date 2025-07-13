@@ -39,7 +39,7 @@ public class PlayerScoreCrawlerService {
 
         //투수목록
         List<Player> pitchers = playerRepository.findAll().stream()
-                .filter(player -> player.getPosition().getName().contains("PITCHER"))
+                .filter(player -> player.getPosition().getName().contains("투수"))
                 .toList();
 
         try {
@@ -104,8 +104,8 @@ public class PlayerScoreCrawlerService {
         WebDriver driver = createChromeDriver();
         //투수 제외 모두 선택
         List<Player> players = playerRepository.findAll().stream()
-                .filter(player -> !player.getPosition().getName().contains("PITCHER"))
-                .collect(Collectors.toList());
+                .filter(player -> !player.getPosition().getName().contains("투수"))
+                .toList();
 
         try {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
