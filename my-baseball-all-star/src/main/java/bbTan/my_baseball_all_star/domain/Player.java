@@ -49,8 +49,8 @@ public class Player {
     }
 
     public void updateScore(Double score) {
-        if (score >= 0 && score <= 100) {
-            throw  new AllStarException(ExceptionCode.INVALID_PLAYER_SCORE);
+        if (score < 0 || score > 100) {
+            throw new AllStarException(ExceptionCode.INVALID_PLAYER_SCORE);
         }
         this.score = score;
     }
