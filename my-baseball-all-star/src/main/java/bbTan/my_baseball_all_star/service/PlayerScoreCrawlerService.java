@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,6 +24,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -41,9 +42,6 @@ public class PlayerScoreCrawlerService {
 
     private void crawlPitcher() {
         WebDriver driver = createChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        // 투수목록
         List<Player> pitchers = playerRepository.findAll().stream()
                 .filter(player -> player.getPosition().getName().contains("투수"))
                 .toList();
@@ -52,53 +50,34 @@ public class PlayerScoreCrawlerService {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
 
             for (Player pitcher : pitchers) {
-                // 포지션 드롭다운에서 '투수' 선택
-                Select positionDropdown = new Select(wait.until(
-                        ExpectedConditions.elementToBeClickable(By.id("cphContents_cphContents_cphContents_ddlPosition"))));
+                Select positionDropdown = new Select(waitForElement(By.id("cphContents_cphContents_cphContents_ddlPosition"), driver, 5));
                 positionDropdown.selectByVisibleText("투수");
 
-                // 검색창 대기 및 입력
-                WebElement searchBox = wait.until(
-                        ExpectedConditions.elementToBeClickable(By.id("cphContents_cphContents_cphContents_txtSearchPlayerName")));
+                WebElement searchBox = waitForElement(By.id("cphContents_cphContents_cphContents_txtSearchPlayerName"), driver, 5);
                 searchBox.clear();
                 searchBox.sendKeys(pitcher.getName());
 
-                // 검색 버튼 클릭 및 검색 결과 대기
-                WebElement searchButton = wait.until(
-                        ExpectedConditions.elementToBeClickable(By.id("cphContents_cphContents_cphContents_btnSearch")));
+                WebElement searchButton = waitForElement(By.id("cphContents_cphContents_cphContents_btnSearch"), driver, 5);
                 searchButton.click();
 
-                // 선수 링크 대기 및 클릭
-                WebElement playerLink = wait.until(ExpectedConditions.elementToBeClickable(
-                        By.cssSelector("#cphContents_cphContents_cphContents_udpRecord > div.inquiry > table > tbody > tr > td:nth-child(2) > a")));
+                WebElement playerLink = waitForElement(By.cssSelector("#cphContents_cphContents_cphContents_udpRecord > div.inquiry > table > tbody > tr > td:nth-child(2) > a"), driver, 5);
                 playerLink.click();
 
-                // 상세 페이지 로딩 대기
-                wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("#contents > div.sub-content > div.player_records")));
+                WebElement row = waitForElement(By.cssSelector("#contents > div.sub-content > div.player_records > div.tbl-type02.tbl-type02-pd0.mb35 > table > tbody > tr"), driver, 5);
+                String era = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
+                String g = row.findElement(By.cssSelector("td:nth-child(3)")).getText();
 
-                // 능력치 가져오기 - 첫 번째 표
-                WebElement row = wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("#contents > div.sub-content > div.player_records > div.tbl-type02.tbl-type02-pd0.mb35 > table > tbody > tr")));
-                String era = row.findElement(By.cssSelector("td:nth-child(2)")).getText();  // ERA
-                String g = row.findElement(By.cssSelector("td:nth-child(3)")).getText();    // G
+                row = waitForElement(By.cssSelector("#contents > div.sub-content > div.player_records > div:nth-child(4) > table > tbody > tr"), driver, 5);
+                String so = row.findElement(By.cssSelector("td:nth-child(5)")).getText();
+                String whip = row.findElement(By.cssSelector("td:nth-child(11)")).getText();
+                String avg = row.findElement(By.cssSelector("td:nth-child(12)")).getText();
+                String qs = row.findElement(By.cssSelector("td:nth-child(13)")).getText();
 
-                // 두번째 표
-                row = wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("#contents > div.sub-content > div.player_records > div:nth-child(4) > table > tbody > tr")));
-                String so = row.findElement(By.cssSelector("td:nth-child(5)")).getText(); // SO
-                String whip = row.findElement(By.cssSelector("td:nth-child(11)")).getText(); // WHIP
-                String avg = row.findElement(By.cssSelector("td:nth-child(12)")).getText(); // AVG
-                String qs = row.findElement(By.cssSelector("td:nth-child(13)")).getText(); // QS
-
-                Double score = calculateOverallPitcherScore(Double.valueOf(era), Double.valueOf(whip), Integer.valueOf(so),
-                        Integer.valueOf(g), Double.valueOf(avg), Integer.valueOf(qs));
+                Double score = calculateOverallPitcherScore(Double.valueOf(era), Double.valueOf(whip), Integer.valueOf(so), Integer.valueOf(g), Double.valueOf(avg), Integer.valueOf(qs));
                 pitcher.updateScore(score);
 
-                // 첫 페이지로 돌아가기 및 대기
                 driver.navigate().back();
-                wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.id("cphContents_cphContents_cphContents_txtSearchPlayerName")));
+                waitForElement(By.id("cphContents_cphContents_cphContents_txtSearchPlayerName"), driver, 5);
             }
 
         } finally {
@@ -106,11 +85,8 @@ public class PlayerScoreCrawlerService {
         }
     }
 
-    // 야수 점수 크롤링 작업
     private void crawlCatcher() {
         WebDriver driver = createChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
         List<Player> players = playerRepository.findAll().stream()
                 .filter(player -> !player.getPosition().getName().contains("투수"))
                 .toList();
@@ -120,97 +96,64 @@ public class PlayerScoreCrawlerService {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
 
             for (Player player : players) {
-                Select positionDropdown = new Select(wait.until(
-                        ExpectedConditions.elementToBeClickable(By.id("cphContents_cphContents_cphContents_ddlPosition"))));
+                Select positionDropdown = new Select(waitForElement(By.id("cphContents_cphContents_cphContents_ddlPosition"), driver, 5));
 
-                if (player.getPosition() == Position.CATCHER) {
-                    positionDropdown.selectByVisibleText("포수");
+                String positionText = switch (player.getPosition()) {
+                    case CATCHER -> "포수";
+                    case OUT_FIELD -> "외야수";
+                    default -> "내야수";
+                };
+                positionDropdown.selectByVisibleText(positionText);
 
-                    WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.id("cphContents_cphContents_cphContents_txtSearchPlayerName")));
-                    searchBox.clear();
-                    searchBox.sendKeys(player.getName());
+                WebElement searchBox = waitForElement(By.id("cphContents_cphContents_cphContents_txtSearchPlayerName"), driver, 5);
+                searchBox.clear();
+                searchBox.sendKeys(player.getName());
 
-                    WebElement searchButton = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.id("cphContents_cphContents_cphContents_btnSearch")));
-                    searchButton.click();
-                } else {
-                    // 포지션 선택 (외야수 or 내야수)
-                    String pos = player.getPosition() == Position.OUT_FIELD ? "외야수" : "내야수";
-                    positionDropdown.selectByVisibleText(pos);
+                WebElement searchButton = waitForElement(By.id("cphContents_cphContents_cphContents_btnSearch"), driver, 5);
+                searchButton.click();
 
-                    WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.id("cphContents_cphContents_cphContents_txtSearchPlayerName")));
-                    searchBox.clear();
-                    searchBox.sendKeys(player.getName());
-
-                    WebElement searchButton = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.id("cphContents_cphContents_cphContents_btnSearch")));
-                    searchButton.click();
-
-                    // 검색 결과 tbody 대기 및 확인
-                    WebElement tbody = wait.until(ExpectedConditions.presenceOfElementLocated(
-                            By.cssSelector("#cphContents_cphContents_cphContents_udpRecord > div.inquiry > table > tbody")));
+                try {
+                    WebElement tbody = waitForElement(By.cssSelector("#cphContents_cphContents_cphContents_udpRecord > div.inquiry > table > tbody"), driver, 3);
                     List<WebElement> rows = tbody.findElements(By.tagName("tr"));
-
                     if (rows.isEmpty()) {
-                        if (pos.equals("외야수")) {
-                            positionDropdown = new Select(wait.until(ExpectedConditions.elementToBeClickable(
-                                    By.id("cphContents_cphContents_cphContents_ddlPosition"))));
-                            positionDropdown.selectByVisibleText("내야수");
-                        } else if (pos.equals("내야수")) {
-                            positionDropdown = new Select(wait.until(ExpectedConditions.elementToBeClickable(
-                                    By.id("cphContents_cphContents_cphContents_ddlPosition"))));
-                            positionDropdown.selectByVisibleText("외야수");
-                        }
-
-                        searchBox = wait.until(ExpectedConditions.elementToBeClickable(
-                                By.id("cphContents_cphContents_cphContents_txtSearchPlayerName")));
+                        String altPos = positionText.equals("외야수") ? "내야수" : "외야수";
+                        positionDropdown = new Select(waitForElement(By.id("cphContents_cphContents_cphContents_ddlPosition"), driver, 5));
+                        positionDropdown.selectByVisibleText(altPos);
+                        searchBox = waitForElement(By.id("cphContents_cphContents_cphContents_txtSearchPlayerName"), driver, 5);
                         searchBox.clear();
                         searchBox.sendKeys(player.getName());
-
-                        searchButton = wait.until(ExpectedConditions.elementToBeClickable(
-                                By.id("cphContents_cphContents_cphContents_btnSearch")));
+                        searchButton = waitForElement(By.id("cphContents_cphContents_cphContents_btnSearch"), driver, 5);
                         searchButton.click();
                     }
+                } catch (TimeoutException ignored) {
+                    continue;
                 }
 
-                // 선수 링크 클릭 대기 및 클릭
-                WebElement playerLink = wait.until(ExpectedConditions.elementToBeClickable(
-                        By.cssSelector("#cphContents_cphContents_cphContents_udpRecord > div.inquiry > table > tbody > tr > td:nth-child(2) > a")));
+                WebElement playerLink = waitForElement(By.cssSelector("#cphContents_cphContents_cphContents_udpRecord > div.inquiry > table > tbody > tr > td:nth-child(2) > a"), driver, 5);
                 playerLink.click();
 
-                // 상세 페이지 로딩 대기
-                wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("#contents > div.sub-content > div.player_records")));
+                WebElement row = waitForElement(By.cssSelector("#contents > div.sub-content > div.player_records > div.tbl-type02.tbl-type02-pd0.mb35 > table > tbody > tr"), driver, 5);
+                String avg = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
+                String hr = row.findElement(By.cssSelector("td:nth-child(10)")).getText();
+                String rbi = row.findElement(By.cssSelector("td:nth-child(12)")).getText();
 
-                // 능력치 가져오기 - 첫 번째 표
-                WebElement row = wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("#contents > div.sub-content > div.player_records > div.tbl-type02.tbl-type02-pd0.mb35 > table > tbody > tr")));
-                String avg = row.findElement(By.cssSelector("td:nth-child(2)")).getText();  // AVG
-                String hr = row.findElement(By.cssSelector("td:nth-child(10)")).getText();    // HR
-                String rbi = row.findElement(By.cssSelector("td:nth-child(12)")).getText();    // RBI
-
-                // 두번째 표
-                row = wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("#contents > div.sub-content > div.player_records > div:nth-child(4) > table > tbody > tr")));
-                String ops = row.findElement(By.cssSelector("td:nth-child(11)")).getText(); // OPS
-                String so = row.findElement(By.cssSelector("td:nth-child(4)")).getText(); // SO
-                String gdp = row.findElement(By.cssSelector("td:nth-child(5)")).getText(); // GDP
+                row = waitForElement(By.cssSelector("#contents > div.sub-content > div.player_records > div:nth-child(4) > table > tbody > tr"), driver, 5);
+                String ops = row.findElement(By.cssSelector("td:nth-child(11)")).getText();
+                String so = row.findElement(By.cssSelector("td:nth-child(4)")).getText();
+                String gdp = row.findElement(By.cssSelector("td:nth-child(5)")).getText();
 
                 Double score = calculateOffensiveScore(Double.valueOf(avg), Integer.valueOf(hr), Integer.valueOf(rbi),
                         Double.valueOf(ops), Integer.valueOf(so), Integer.valueOf(gdp));
-                player.updateScore(score);
 
-                // 첫 페이지로 돌아가기 및 대기
+                player.updateScore(score);
                 driver.navigate().back();
-                wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.id("cphContents_cphContents_cphContents_txtSearchPlayerName")));
+                waitForElement(By.id("cphContents_cphContents_cphContents_txtSearchPlayerName"), driver, 5);
             }
         } finally {
             driver.quit();
         }
     }
+
 
     //투수 점수 계산
     private double calculateOverallPitcherScore(double era, double whip, int so, int g, double avg, int qs) {
@@ -280,4 +223,10 @@ public class PlayerScoreCrawlerService {
 
         return new ChromeDriver(options);
     }
+
+    private WebElement waitForElement(By by, WebDriver driver, int seconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        return wait.until(ExpectedConditions.presenceOfElementLocated(by));
+    }
+
 }
