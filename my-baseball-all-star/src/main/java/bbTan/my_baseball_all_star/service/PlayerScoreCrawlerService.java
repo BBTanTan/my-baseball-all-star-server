@@ -26,7 +26,12 @@ public class PlayerScoreCrawlerService {
     private final PlayerRepository playerRepository;
 
     @Scheduled(cron = "${scheduler.crawl}")
-    public void crawlPitcher() {
+    public void crawl() {
+        crawlPitcher();
+        crawlCatcher();
+    }
+
+    private void crawlPitcher() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
@@ -93,8 +98,7 @@ public class PlayerScoreCrawlerService {
     }
 
     //야수 점수 크롤링 작업
-    @Scheduled(cron = "${scheduler.crawl}")
-    public void crawlCatcher() {
+    private void crawlCatcher() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         //투수 제외 모두 선택
@@ -216,9 +220,6 @@ public class PlayerScoreCrawlerService {
         }
 
     }
-
-
-
 
     //투수 점수 계산
     private double calculateOverallPitcherScore(double era, double whip, int so, int g, double avg, int qs) {
