@@ -224,32 +224,47 @@ public class PlayerScoreCrawlerService {
 
     //투수 점수 계산
     private double calculateOverallPitcherScore(double era, double whip, int so, int g, double avg, int qs) {
-        double pwr = Math.min(so / (double) g * 10, 100); // 구위
-        double ctl = Math.max(100 - era * 20, 0);         // 제구
-        double clt = Math.min(qs / (double) g * 100, 100); // 위기관리
-        double hitAvoid = Math.max(100 - avg * 100, 0);   // 피안타 회피
-        double mental = Math.max(100 - (32.0 / so) * 100, 0); // 멘탈 (실점 대비 삼진)
-        double var = Math.max(100 - whip * 20, 0);        // 변화구 제구력 (WHIP 기반)
+        // 1. 이닝당 삼진 비율 (K/9 기준)
+        double kPer9 = (so / (double) g) * 9;
+        double pwr = Math.max(0, Math.min((kPer9 - 3.0) / 10.0 * 100, 100));
 
-        return Math.round((
-                pwr * 0.25 +
-                        ctl * 0.25 +
-                        clt * 0.20 +
-                        hitAvoid * 0.15 +
-                        mental * 0.10 +
-                        var * 0.05
-        ) * 100.0) / 100.0;
+        // 2. ERA: 0.00 ~ 5.00 기준
+        double ctl = Math.max(0, Math.min((5.0 - era) / 5.0 * 100, 100));
+
+        // 3. QS 비율
+        double clt = Math.max(0, Math.min(qs / (double) g * 100, 100));
+
+        // 4. 피안타율: 0.300 ~ 0.200 기준
+        double hitAvoid = Math.max(0, Math.min((0.300 - avg) / 0.100 * 100, 100));
+
+        // 5. 삼진 수 (멘탈): 0 ~ 200 기준
+        double mental = Math.max(0, Math.min(so / 200.0 * 100, 100));
+
+        // 6. WHIP: 1.5 ~ 0.8 기준
+        double var = Math.max(0, Math.min((1.5 - whip) / 0.7 * 100, 100));
+
+        // 가중치 합산 (총합 = 1.0)
+        double total = pwr * 0.25
+                + ctl * 0.25
+                + clt * 0.20
+                + hitAvoid * 0.15
+                + mental * 0.10
+                + var * 0.05;
+
+        return Math.round(total * 100.0) / 100.0;
     }
 
     //야수 & 포수 능력치 계산
     public double calculateOffensiveScore(double avg, int hr, int rbi, double ops, int so, int gdp) {
-        double contact = avg * 100;
-        double power = hr * 2;
-        double clutch = rbi * 0.5;
-        double productivity = ops * 50;
-        double discipline = Math.max(100 - so * 0.2, 0);
-        double smartPlay = Math.max(100 - gdp * 0.5, 0);
+        // 정규화된 값 (0~100)
+        double contact = Math.max(0, Math.min((avg - 0.200) / 0.150 * 100, 100));         // 타율 0.200~0.350
+        double power = Math.min(hr / 60.0 * 100, 100);                                     // 최대 60홈런 기준
+        double clutch = Math.min(rbi / 120.0 * 100, 100);                                  // 최대 120타점 기준
+        double productivity = Math.max(0, Math.min((ops - 0.500) / 0.700 * 100, 100));     // OPS 0.5~1.2
+        double discipline = Math.max(0, (1 - so / 200.0) * 100);                           // 0~200삼진 기준
+        double smartPlay = Math.max(0, (1 - gdp / 30.0) * 100);                            // 0~30병살 기준
 
+        // 가중치 합산
         double total = contact * 0.20
                 + power * 0.20
                 + clutch * 0.15
@@ -259,7 +274,7 @@ public class PlayerScoreCrawlerService {
 
         return Math.round(total * 100.0) / 100.0;
     }
-
+    
     public WebDriver createChromeDriver() {
         WebDriverManager.chromedriver().setup();
 
