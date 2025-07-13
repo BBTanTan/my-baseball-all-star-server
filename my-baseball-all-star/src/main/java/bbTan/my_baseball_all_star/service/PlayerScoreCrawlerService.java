@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -29,6 +30,7 @@ public class PlayerScoreCrawlerService {
     private final PlayerRepository playerRepository;
 
     @Scheduled(cron = "${scheduler.crawl}")
+    @Transactional
     public void crawl() {
         crawlPitcher();
         crawlCatcher();
