@@ -25,13 +25,7 @@ public class PlayerScoreCrawlerService {
 
     private final PlayerRepository playerRepository;
 
-    @PostConstruct
-    public void init() {
-        crawlPitcher();
-        crawlCatcher();
-    }
-
-    @Scheduled(cron = "0 0 3 * * ?") // 매일 오전 3시에 크롤링 작업 수행
+    @Scheduled(cron = "${scheduler.crawl}")
     public void crawlPitcher() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
@@ -99,7 +93,7 @@ public class PlayerScoreCrawlerService {
     }
 
     //야수 점수 크롤링 작업
-    @Scheduled(cron = "0 0 3 * * ?") // 매일 오전 3시에 크롤링 작업 수행
+    @Scheduled(cron = "${scheduler.crawl}")
     public void crawlCatcher() {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
