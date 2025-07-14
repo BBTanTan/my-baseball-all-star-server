@@ -60,7 +60,7 @@ public class AllStarController {
         return ResponseEntity.ok(allStarService.readFriendPlayTeam(teamUrl));
     }
 
-    @PostMapping("/teams/{team-id}")
+    @PostMapping("/play-results/{team-id}")
     public ResponseEntity<TeamPlayResultResponse> readTeamPlayResults(@PathVariable("team-id") Long teamId,
                                                                       @Valid @RequestBody TeamPlayResultRequest request) {
         return ResponseEntity.ok(allStarService.readTeamPlayResults(teamId, request));

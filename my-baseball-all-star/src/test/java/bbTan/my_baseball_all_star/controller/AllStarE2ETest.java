@@ -177,7 +177,7 @@ class AllStarE2ETest extends AcceptanceTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/teams/1")
+                .when().post("/play-results/1")
                 .then().log().all()
                 .statusCode(200);
     }
@@ -189,7 +189,7 @@ class AllStarE2ETest extends AcceptanceTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/teams/1")
+                .when().post("/play-results/1")
                 .then().log().all()
                 .statusCode(400);
     }
