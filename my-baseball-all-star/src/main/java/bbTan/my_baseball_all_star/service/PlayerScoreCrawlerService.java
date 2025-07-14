@@ -33,7 +33,6 @@ public class PlayerScoreCrawlerService {
     private final PlayerRepository playerRepository;
 
     @Scheduled(cron = "${scheduler.crawl}")
-    @Transactional
     public void crawl() {
         crawlPitcher();
         crawlCatcher();
@@ -45,7 +44,7 @@ public class PlayerScoreCrawlerService {
         //투수목록
         List<Player> pitchers = playerRepository.findAll().stream()
                 .filter(player -> player.getPosition().getName().contains("투수"))
-                .collect(Collectors.toList());
+                .toList();
 
         try {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
@@ -90,7 +89,7 @@ public class PlayerScoreCrawlerService {
                 String qs = row.findElement(By.cssSelector("td:nth-child(13)")).getText(); // QS
 
                 Double score = calculateOverallPitcherScore(Double.valueOf(era),Double.valueOf(whip),Integer.valueOf(so),Integer.valueOf(g),Double.valueOf(avg),Integer.valueOf(qs));
-                pitcher.updateScore(score);
+                playerRepository.updateScoreById(pitcher.getId(), score);
 
                 // 5. 상세 페이지에서 데이터 추출 후 첫 페이지로 돌아가기
                 driver.navigate().back();
@@ -211,8 +210,7 @@ public class PlayerScoreCrawlerService {
                 Double score = calculateOffensiveScore(Double.valueOf(avg),Integer.valueOf(hr),Integer.valueOf(rbi),
                         Double.valueOf(ops),Integer.valueOf(so),Integer.valueOf(gdp));
 
-                player.updateScore(score);
-                System.out.println(player);
+                playerRepository.updateScoreById(player.getId(), score);
 
                 // 5. 상세 페이지에서 데이터 추출 후 첫 페이지로 돌아가기
                 driver.navigate().back();
@@ -225,7 +223,6 @@ public class PlayerScoreCrawlerService {
             driver.quit(); // 리소스 정리
         }
     }
-
 
     //투수 점수 계산
     private double calculateOverallPitcherScore(double era, double whip, int so, int g, double avg, int qs) {

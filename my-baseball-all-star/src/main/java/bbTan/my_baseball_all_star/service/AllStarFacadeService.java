@@ -4,7 +4,6 @@ import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayCreateRequest
 import bbTan.my_baseball_all_star.controller.dto.request.FriendPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.SoloPlayRequest;
 import bbTan.my_baseball_all_star.controller.dto.request.TeamPlayResultRequest;
-import bbTan.my_baseball_all_star.controller.dto.request.TeamRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
@@ -29,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 public class AllStarFacadeService {
 
+    private static final String RANDOM_TEAM = "RANDOM TEAM";
+
     private final PlayerService playerService;
     private final PlayerChoiceCountService playerChoiceCountService;
     private final TeamService teamService;
@@ -47,7 +48,7 @@ public class AllStarFacadeService {
     @Transactional
     public PlayResultResponse friendPlay(FriendPlayRequest request) {
         Team homeTeam = teamService.readById(request.homeTeamId());
-        TeamRoaster home = makeTeamRoaster(homeTeam);
+        TeamRoaster home = makeTeamRoasterByExistedTeam(homeTeam);
         TeamRoaster away = makeTeamRoaster(request.awayTeam().teamName(), request.awayTeam().playerIds());
         List<Integer> playResult = play(home, away);
         playResultService.saveResult(homeTeam, away, playResult);
@@ -72,12 +73,8 @@ public class AllStarFacadeService {
 
         List<Player> selectedPlayers = playerService.randomPlayerSelection();
         List<Long> playerIds = selectedPlayers.stream().map(Player::getId).toList();
-
-
         List<Long> selectedPlayerChoiceCount = playerChoiceCountService.readChoiceCounts(playerIds);
-
-        String RANDOM_TEAM_NAME = "RANDOM TEAM";
-        return RandomTeamPlayerResponse.fromEntity(new TeamRoaster(RANDOM_TEAM_NAME, selectedPlayers, selectedPlayerChoiceCount));
+        return RandomTeamPlayerResponse.fromEntity(new TeamRoaster(RANDOM_TEAM, selectedPlayers, selectedPlayerChoiceCount));
     }
 
     private boolean isWin(List<Integer> playResult) {
@@ -103,10 +100,9 @@ public class AllStarFacadeService {
                 .toList();
     }
 
-    private TeamRoaster makeTeamRoaster(Team team) {
+    private TeamRoaster makeTeamRoasterByExistedTeam(Team team) {
         List<Player> players = teamPlayerService.readByTeamId(team.getId());
         List<Long> playerIds = players.stream().map(Player::getId).toList();
-        playerChoiceCountService.increasePlayersChoiceCount(playerIds);
         List<Long> playerChoiceCounts = playerChoiceCountService.readChoiceCounts(playerIds);
         return new TeamRoaster(team.getName(), players, playerChoiceCounts);
     }
