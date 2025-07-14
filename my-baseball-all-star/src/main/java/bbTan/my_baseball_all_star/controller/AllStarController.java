@@ -7,7 +7,6 @@ import bbTan.my_baseball_all_star.controller.dto.request.TeamPlayResultRequest;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayCreateResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.FriendPlayTeamResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PlayResultResponse;
-import bbTan.my_baseball_all_star.controller.dto.response.PlayerResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.PositionGroupResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.RandomTeamPlayerResponse;
 import bbTan.my_baseball_all_star.controller.dto.response.TeamPlayResultResponse;

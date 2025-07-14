@@ -156,16 +156,16 @@ INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VAL
 ('이주형', 'KIWOOM_HEROES', 'OUT_FIELD', 0, '2001-04-02', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/50167.jpg');
 
 INSERT INTO player (name, club, position, score, date_of_birth, profile_url) VALUES
-('박병호', 'KT_WIZ', 'DESIGNATED_HITTER', 0, '1986-07-10', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78129.jpg'),
-('김재환', 'DOOSAN_BEARS', 'DESIGNATED_HITTER', 0, '1988-09-19', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79015.jpg'),
-('안현민', 'SAMSUNG_LIONS', 'DESIGNATED_HITTER', 0, '1999-05-18', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/68939.jpg'),
-('한유섬', 'SSG_LANDERS', 'DESIGNATED_HITTER', 0, '1989-08-09', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78509.jpg'),
-('전준우', 'LOTTE_GIANTS', 'DESIGNATED_HITTER', 0, '1986-02-25', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79161.jpg'),
-('최형우', 'KIA_TIGERS', 'DESIGNATED_HITTER', 0, '1983-12-16', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/77840.jpg'),
-('김현수', 'LG_TWINS', 'DESIGNATED_HITTER', 0, '1988-01-12', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79181.jpg'),
-('문현빈', 'HANWHA_EAGLES', 'DESIGNATED_HITTER', 0, '2003-09-29', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/54653.jpg'),
-('손아섭', 'NC_DINOS', 'DESIGNATED_HITTER', 0, '1988-03-18', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/79158.jpg'),
-('이형종', 'KIWOOM_HEROES', 'DESIGNATED_HITTER', 0, '1989-09-07', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78610.jpg');
+('박병호', 'SAMSUNG_LIONS', 'DESIGNATED_HITTER', 0, '1986-07-10', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/75125.jpg'),
+('김재환', 'DOOSAN_BEARS', 'DESIGNATED_HITTER', 0, '1988-09-20', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78224.jpg'),
+('안현민', 'KT_WIZ', 'DESIGNATED_HITTER', 0, '2003-08-22', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/52001.jpg'),
+('한유섬', 'SSG_LANDERS', 'DESIGNATED_HITTER', 0, '1989-08-09', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/62895.jpg'),
+('전준우', 'LOTTE_GIANTS', 'DESIGNATED_HITTER', 0, '1986-02-25', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78513.jpg'),
+('최형우', 'KIA_TIGERS', 'DESIGNATED_HITTER', 0, '1983-12-16', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/72443.jpg'),
+('김현수', 'LG_TWINS', 'DESIGNATED_HITTER', 0, '1988-01-12', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/76290.jpg'),
+('문현빈', 'HANWHA_EAGLES', 'DESIGNATED_HITTER', 0, '2004-04-20', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/53764.jpg'),
+('손아섭', 'NC_DINOS', 'DESIGNATED_HITTER', 0, '1988-03-18', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/77532.jpg'),
+('이형종', 'KIWOOM_HEROES', 'DESIGNATED_HITTER', 0, '1989-06-07', 'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/person/middle/2025/78135.jpg');
 
 INSERT INTO player_choice_count (player_id, count, version)
 SELECT p.id, 0, 0
