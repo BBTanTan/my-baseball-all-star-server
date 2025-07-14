@@ -45,7 +45,7 @@ public class PlayerScoreCrawlerService {
         //투수목록
         List<Player> pitchers = playerRepository.findAll().stream()
                 .filter(player -> player.getPosition().getName().contains("투수"))
-                .collect(Collectors.toList());
+                .toList();
 
         try {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
