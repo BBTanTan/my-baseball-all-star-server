@@ -89,7 +89,7 @@ public class PlayerScoreCrawlerService {
                 String qs = row.findElement(By.cssSelector("td:nth-child(13)")).getText(); // QS
 
                 Double score = calculateOverallPitcherScore(Double.valueOf(era),Double.valueOf(whip),Integer.valueOf(so),Integer.valueOf(g),Double.valueOf(avg),Integer.valueOf(qs));
-                playerRepository.updateScoreById(pitcher.getId(), score);
+                pitcher.updateScore(score);
 
                 // 5. 상세 페이지에서 데이터 추출 후 첫 페이지로 돌아가기
                 driver.navigate().back();
@@ -101,6 +101,8 @@ public class PlayerScoreCrawlerService {
         } finally {
             driver.quit(); // 리소스 정리
         }
+
+        playerRepository.saveAll(pitchers);
     }
 
     private void crawlCatcher() {
@@ -210,7 +212,7 @@ public class PlayerScoreCrawlerService {
                 Double score = calculateOffensiveScore(Double.valueOf(avg),Integer.valueOf(hr),Integer.valueOf(rbi),
                         Double.valueOf(ops),Integer.valueOf(so),Integer.valueOf(gdp));
 
-                playerRepository.updateScoreById(player.getId(), score);
+                player.updateScore(score);
 
                 // 5. 상세 페이지에서 데이터 추출 후 첫 페이지로 돌아가기
                 driver.navigate().back();
@@ -222,6 +224,7 @@ public class PlayerScoreCrawlerService {
         } finally {
             driver.quit(); // 리소스 정리
         }
+        playerRepository.saveAll(players);
     }
 
     //투수 점수 계산
