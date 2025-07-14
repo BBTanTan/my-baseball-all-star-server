@@ -116,7 +116,9 @@ public class AllStarFacadeService {
     @Transactional(readOnly = true)
     public FriendPlayTeamResponse readFriendPlayTeam(String teamUrl) {
         Team team = playShareService.readTeamByUrl(teamUrl);
-        return new FriendPlayTeamResponse(team.getId(), team.getName());
+        List<PlayerResponse> players = teamPlayerService.readByTeamId(team.getId())
+                .stream().map(PlayerResponse::fromEntity).toList();
+        return new FriendPlayTeamResponse(team.getId(), team.getName(), players);
     }
 
     @Transactional(readOnly = true)
