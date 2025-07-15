@@ -7,6 +7,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class PlayerScoreCrawlerService {
+
+    private static final double MIN_SCORE = 1.0;
+    private static final double MAX_SCORE = 90.0;
 
     private final PlayerRepository playerRepository;
 
@@ -101,7 +105,7 @@ public class PlayerScoreCrawlerService {
         } finally {
             driver.quit(); // 리소스 정리
         }
-
+        assignScores(pitchers);
         playerRepository.saveAll(pitchers);
     }
 
@@ -224,6 +228,7 @@ public class PlayerScoreCrawlerService {
         } finally {
             driver.quit(); // 리소스 정리
         }
+        assignScores(players);
         playerRepository.saveAll(players);
     }
 
@@ -279,5 +284,21 @@ public class PlayerScoreCrawlerService {
         options.addArguments("--user-data-dir=" + userDataDir);
 
         return new ChromeDriver(options);
+    }
+
+    public void assignScores(List<Player> players) {
+        players.sort(Comparator.comparingDouble(Player::getScore));
+
+        int size = players.size();
+
+        for (int i = 0; i < size; i++) {
+            double scaledScore;
+            if (size == 1) {
+                scaledScore = (MIN_SCORE + MAX_SCORE) / 2.0;
+            } else {
+                scaledScore = MIN_SCORE + (MAX_SCORE - MIN_SCORE) * i / (size - 1);
+            }
+            players.get(i).updateScore(scaledScore);
+        }
     }
 }
