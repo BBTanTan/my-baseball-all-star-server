@@ -32,6 +32,7 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.retry:spring-retry'
 	implementation 'org.springframework:spring-aspects'
+	runtimeOnly 'com.h2database:h2'
 
 	//크롤링을 위한 셀레니움
 	implementation 'org.seleniumhq.selenium:selenium-java:4.34.0'
