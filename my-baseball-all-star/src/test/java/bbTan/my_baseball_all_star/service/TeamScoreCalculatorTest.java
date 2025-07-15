@@ -24,6 +24,6 @@ class TeamScoreCalculatorTest {
         Integer score = TeamScoreCalculator.calculate(team);
 
         // then
-        assertThat(score).isBetween(0, 20);
+        assertThat(score).isBetween(0, 15);
     }
 }
