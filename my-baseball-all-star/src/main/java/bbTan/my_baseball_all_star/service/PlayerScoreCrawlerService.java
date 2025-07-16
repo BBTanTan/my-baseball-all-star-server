@@ -26,6 +26,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static java.util.stream.Collectors.toList;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,7 @@ public class PlayerScoreCrawlerService {
         //투수목록
         List<Player> pitchers = playerRepository.findAll().stream()
                 .filter(player -> player.getPosition().getName().contains("투수"))
-                .toList();
+                .collect(toList());
 
         try {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
@@ -114,7 +116,7 @@ public class PlayerScoreCrawlerService {
         //투수 제외 모두 선택
         List<Player> players = playerRepository.findAll().stream()
                 .filter(player -> !player.getPosition().getName().contains("투수"))
-                .toList();
+                .collect(toList());
 
         try {
             driver.get("https://www.koreabaseball.com/Player/Search.aspx");
