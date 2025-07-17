@@ -38,6 +38,10 @@ dependencies {
 	implementation 'org.seleniumhq.selenium:selenium-java:4.34.0'
 	implementation 'io.github.bonigarcia:webdrivermanager:5.8.0'
 
+	//매트릭 수집을 위한 actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.rest-assured:rest-assured:5.3.1'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
